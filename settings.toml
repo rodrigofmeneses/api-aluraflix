@@ -1,0 +1,11 @@
+[default]
+EXTENSIONS = [
+    'app.ext.database:init_app',
+    'app.ext.commands:init_app'
+]
+
+[development]
+SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
+
+[testing]
+SQLALCHEMY_DATABASE_URI = 'sqlite:///'
