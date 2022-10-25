@@ -1,2 +1,2 @@
-# challenger-back-end-alura
-Desafio Challenger Back End Alura! #alurachallengebackend5
+# challenge-back-end-alura
+Desafio Back End Alura! #alurachallengebackend5
