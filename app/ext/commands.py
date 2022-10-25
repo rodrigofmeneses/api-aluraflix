@@ -1,5 +1,5 @@
 from app.ext.database import db
-
+from app.models import Videos
 
 def create_db():
     '''Create database'''
@@ -11,7 +11,20 @@ def drop_db():
 
 def populate_db():
     '''Populate database'''
-    ...
+    videos = [
+        Videos(
+            titulo='Video teste 1',
+            descricao='Meu primeiro video',
+            url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+        ),
+        Videos(
+            titulo='Video teste 2',
+            descricao='Meu segundo video',
+            url='https://www.youtube.com/watch?v=xFrGuyw1V8s'
+        ),
+    ]
+    db.session.bulk_save_objects(videos)
+    db.session.commit()
 
 def init_app(app):
     '''Registry commands on flask'''
