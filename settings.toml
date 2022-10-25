@@ -1,4 +1,5 @@
 [default]
+FLASK_DEBUG = true
 EXTENSIONS = [
     'app.ext.database:init_app',
     'app.ext.commands:init_app',
@@ -9,4 +10,5 @@ EXTENSIONS = [
 SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
 
 [testing]
+TESTING = true
 SQLALCHEMY_DATABASE_URI = 'sqlite:///'

@@ -6,4 +6,4 @@ db = SQLAlchemy()
 
 def init_app(app):
     db.init_app(app)
-    Migrate(app, db)
+    Migrate(app, db, render_as_batch=True)

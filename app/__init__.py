@@ -1,10 +1,9 @@
 from flask import Flask
 from dynaconf import FlaskDynaconf
-from app.models import Videos
 
 
-def create_app():
+def create_app(**config):
     app = Flask(__name__)
-    FlaskDynaconf(app)
+    FlaskDynaconf(app, **config)
     app.config.load_extensions('EXTENSIONS')
     return app
