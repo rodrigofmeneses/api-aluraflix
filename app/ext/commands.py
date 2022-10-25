@@ -30,4 +30,4 @@ def init_app(app):
     '''Registry commands on flask'''
     for command in [create_db, drop_db, populate_db]:
         app.cli.add_command(app.cli.command()(command))
-    return app
+        

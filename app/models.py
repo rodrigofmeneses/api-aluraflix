@@ -8,3 +8,11 @@ class Videos(db.Model):
     titulo = db.Column(db.String(50))
     descricao = db.Column(db.String(255))
     url = db.Column(db.String(255))
+
+    def serializer(self):
+        return {
+            'id': self.id,
+            'titulo': self.titulo,
+            'descricao': self.descricao,
+            'url': self.url
+        }
