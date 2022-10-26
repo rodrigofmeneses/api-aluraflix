@@ -1,4 +1,4 @@
-from app.controllers.videos import videos
+from app.controllers.videos_controller import videos
 
 
 def init_app(app):

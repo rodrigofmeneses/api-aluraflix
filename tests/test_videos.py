@@ -1,7 +1,3 @@
-from app import create_app
-from app.ext.database import db
-from flask import jsonify
-from pytest import fixture
 import json
 
 
@@ -24,6 +20,8 @@ def test_videos_POST_validate(client, videos):
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 201
     assert b'Video teste 3' in response.data
+    assert b'Meu terceiro video' in response.data
+    assert b'url teste' in response.data
 
 def test_videos_POST_not_validate_missing_field(client, videos):
     data = {
@@ -44,3 +42,14 @@ def test_videos_POST_not_validate_duplicated_url(client, videos):
     assert response.status_code == 400
     assert b'something wrong' in response.data
 
+def test_videos_PUT_with_valid_json(client, videos):
+    data = {
+        'titulo': 'Video teste 1 atualizado',
+        'descricao': 'Meu terceiro video atualizado',
+        'url': 'https://www.youtube.com/watch?v=xFrGuyw1V8s'
+    }
+    response = client.put('/videos/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 200
+    assert b'Video teste 1 atualizado' in response.data
+    assert b'Meu terceiro video atualizado' in response.data
+    assert b'https://www.youtube.com/watch?v=xFrGuyw1V8s' in response.data
