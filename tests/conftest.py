@@ -22,11 +22,13 @@ def client():
 def videos(client):
     videos = [
         Videos(
+            id=1,
             titulo='Video teste 1',
             descricao='Meu primeiro video',
             url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
         ),
         Videos(
+            id=2,
             titulo='Video teste 2',
             descricao='Meu segundo video',
             url='https://www.youtube.com/watch?v=xFrGuyw1V8s'

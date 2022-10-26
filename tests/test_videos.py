@@ -13,6 +13,7 @@ def test_videos_GET_by_id(client, videos):
 
 def test_videos_POST_validate(client, videos):
     data = {
+        'id': 3,
         'titulo': 'Video teste 3',
         'descricao': 'Meu terceiro video',
         'url': 'url teste'
@@ -44,6 +45,7 @@ def test_videos_POST_not_validate_duplicated_url(client, videos):
 
 def test_videos_PUT_with_valid_json(client, videos):
     data = {
+        'id': 1,
         'titulo': 'Video teste 1 atualizado',
         'descricao': 'Meu terceiro video atualizado',
         'url': 'https://www.youtube.com/watch?v=xFrGuyw1V8s'

@@ -21,10 +21,11 @@ def get_video_by_id(id):
 def add_video():
     data = request.get_json()
     try:
+        id = data['id']
         titulo = data['titulo']
         descricao = data['descricao']
         url = data['url']
-        video = Videos(titulo=titulo, descricao=descricao, url=url)
+        video = Videos(id=id, titulo=titulo, descricao=descricao, url=url)
         db.session.add(video)
         db.session.commit()
     except:
@@ -38,7 +39,10 @@ def update_video_by_id(id):
     video = Videos.query.get(id)
     if not video:
         return jsonify({'message': 'video not found'}), 404
+    if video.id == data['id']:
+        return jsonify({'message': 'id not valid'}), 406
     try:
+        video.id = data['id']
         video.titulo = data['titulo']
         video.descricao = data['descricao']
         video.url = data['url']
