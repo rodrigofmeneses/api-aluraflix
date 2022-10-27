@@ -41,7 +41,7 @@ def add_video():
     return jsonify(video.serializer()), 201
     
 
-@videos.put('/<int:id>')
+@videos.route('/<int:id>', methods=['PUT', 'PATCH'])
 def update_video_by_id(id):
     '''Update video by id with POST method. Request JSON body must be validade.
     Validation consists in all fields present without nullable values.
@@ -53,19 +53,32 @@ def update_video_by_id(id):
             Response JSON with updated video or error message and status code.
     '''
     data = request.get_json()
-    if not validate_json(data):
-        return jsonify({'message': 'json body not allowed'}), 400
     video = Videos.query.get(id)
     if not video:
         return jsonify({'message': 'video not found'}), 404
+    match request.method:
+        case 'PUT':
+            if not validate_json(data, method='PUT'):
+                return jsonify({'message': 'json body not allowed'}), 400
+            # for key in data.keys():
+            #     setattr(video, key, data[key])
+            # video.id = data['id']
+            # video.titulo = data['titulo']
+            # video.descricao = data['descricao']
+            # video.url = data['url']
+        case 'PATCH':
+            if not validate_json(data, method='PATCH'):
+                return jsonify({'message': 'json body not allowed'}), 400
+
     try:
-        video.id = data['id']
-        video.titulo = data['titulo']
-        video.descricao = data['descricao']
-        video.url = data['url']
+        for key in data.keys():
+            setattr(video, key, data[key])
         db.session.add(video)
         db.session.commit()
     except:
         return jsonify({'message': 'something wrong'}), 400
     return jsonify(video.serializer()), 200
     
+@videos.patch('/<int:id>')
+def update_video_by_id_patch(id):
+    data = request.get_json()

@@ -100,3 +100,13 @@ def test_videos_PUT_with_not_valid_json_blank_fields(client, videos):
     assert response.status_code == 400
     assert b'json body not allowed' in response.data
     
+def test_videos_PATCH_with_valid_json(client, videos):
+    data = {
+        'titulo': 'Video teste 1 atualizado'
+    }
+    response = client.patch('/videos/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 200
+    assert b'"id": 1' in response.data
+    assert b'Video teste 1 atualizado' in response.data
+    assert b'Meu primeiro video' in response.data
+    assert b'url test 1' in response.data
