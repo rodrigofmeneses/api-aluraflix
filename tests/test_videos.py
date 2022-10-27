@@ -11,33 +11,44 @@ def test_videos_GET_by_id(client, videos):
     assert response.status_code == 200
     assert b'Video teste 2' in response.data
 
-def test_videos_POST_validate(client, videos):
+def test_videos_POST_with_valid_json(client, videos):
     data = {
         'id': 3,
         'titulo': 'Video teste 3',
         'descricao': 'Meu terceiro video',
-        'url': 'url teste'
+        'url': 'url teste 3'
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 201
     assert b'Video teste 3' in response.data
     assert b'Meu terceiro video' in response.data
-    assert b'url teste' in response.data
+    assert b'url teste 3' in response.data
 
-def test_videos_POST_not_validate_missing_field(client, videos):
+def test_videos_POST_not_valid_json_missing_field(client, videos):
     data = {
         'titulo': 'Video teste 3',
-        'url': 'url teste'
+        'url': 'url teste 3'
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'something wrong' in response.data
 
-def test_videos_POST_not_validate_duplicated_url(client, videos):
+def test_videos_POST_not_valid_json_duplicated_url(client, videos):
     data = {
         'titulo': 'Video teste 3',
         'descricao': 'Meu terceiro video',
-        'url': 'https://www.youtube.com/watch?v=xFrGuyw1V8s'
+        'url': 'url test 2'
+    }
+    response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 400
+    assert b'something wrong' in response.data
+
+def test_videos_POST_not_valid_json_more_fields(client, videos):
+    data = {
+        'titulo': 'Video teste 3',
+        'descricao': 'Meu terceiro video',
+        'url': 'url test 3',
+        'ola': 123
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
@@ -48,10 +59,10 @@ def test_videos_PUT_with_valid_json(client, videos):
         'id': 1,
         'titulo': 'Video teste 1 atualizado',
         'descricao': 'Meu terceiro video atualizado',
-        'url': 'https://www.youtube.com/watch?v=xFrGuyw1V8s'
+        'url': 'url teste 1'
     }
     response = client.put('/videos/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 200
     assert b'Video teste 1 atualizado' in response.data
     assert b'Meu terceiro video atualizado' in response.data
-    assert b'https://www.youtube.com/watch?v=xFrGuyw1V8s' in response.data
+    assert b'url teste' in response.data

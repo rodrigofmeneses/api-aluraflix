@@ -25,13 +25,13 @@ def videos(client):
             id=1,
             titulo='Video teste 1',
             descricao='Meu primeiro video',
-            url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+            url='url test 1'
         ),
         Videos(
             id=2,
             titulo='Video teste 2',
             descricao='Meu segundo video',
-            url='https://www.youtube.com/watch?v=xFrGuyw1V8s'
+            url='url test 2'
         ),
     ]
     db.session.bulk_save_objects(videos)

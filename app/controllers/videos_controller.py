@@ -36,11 +36,12 @@ def add_video():
 @videos.put('/<int:id>')
 def update_video_by_id(id):
     data = request.get_json()
+    # breakpoint()
+    if set(data.keys()) != set(['id', 'titulo', 'descricao', 'url']):
+        return jsonify({'message': 'json body not allowed, key error'}), 406
     video = Videos.query.get(id)
     if not video:
         return jsonify({'message': 'video not found'}), 404
-    if video.id == data['id']:
-        return jsonify({'message': 'id not valid'}), 406
     try:
         video.id = data['id']
         video.titulo = data['titulo']
@@ -49,6 +50,6 @@ def update_video_by_id(id):
         db.session.add(video)
         db.session.commit()
     except:
-        return jsonify({'message': 'something wrong'}), 406
-    return jsonify(data), 200
+        return jsonify({'message': 'url not unique'}), 406
+    return jsonify(video.serializer()), 200
     
