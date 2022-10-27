@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request, json
+from app.controllers.utils import validate_json
 from app.models import Videos
 from app.ext.database import db
 
@@ -20,6 +21,8 @@ def get_video_by_id(id):
 @videos.post('/')
 def add_video():
     data = request.get_json()
+    if not validate_json(data):
+        return jsonify({'message': 'json body not allowed, key error'}), 400
     try:
         id = data['id']
         titulo = data['titulo']
@@ -30,15 +33,23 @@ def add_video():
         db.session.commit()
     except:
         return jsonify({'message': 'something wrong'}), 400
-    return jsonify(data), 201
+    return jsonify(video.serializer()), 201
     
 
 @videos.put('/<int:id>')
 def update_video_by_id(id):
+    '''Update video by ID. request JSON body must be validade.
+    Validation consists in all fields present without nullable values.
+    
+        Args:
+            id (int): Video id.
+
+        Return:
+            Response JSON with updated video or error message and status code.
+    '''
     data = request.get_json()
-    # breakpoint()
-    if set(data.keys()) != set(['id', 'titulo', 'descricao', 'url']):
-        return jsonify({'message': 'json body not allowed, key error'}), 406
+    if not validate_json(data):
+        return jsonify({'message': 'json body not allowed'}), 400
     video = Videos.query.get(id)
     if not video:
         return jsonify({'message': 'video not found'}), 404
@@ -50,6 +61,6 @@ def update_video_by_id(id):
         db.session.add(video)
         db.session.commit()
     except:
-        return jsonify({'message': 'url not unique'}), 406
+        return jsonify({'message': 'something wrong'}), 400
     return jsonify(video.serializer()), 200
     

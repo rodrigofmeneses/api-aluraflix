@@ -31,20 +31,11 @@ def test_videos_POST_not_valid_json_missing_field(client, videos):
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
-    assert b'something wrong' in response.data
-
-def test_videos_POST_not_valid_json_duplicated_url(client, videos):
-    data = {
-        'titulo': 'Video teste 3',
-        'descricao': 'Meu terceiro video',
-        'url': 'url test 2'
-    }
-    response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
-    assert response.status_code == 400
-    assert b'something wrong' in response.data
+    assert b'json body not allowed' in response.data
 
 def test_videos_POST_not_valid_json_more_fields(client, videos):
     data = {
+        'id': 3,
         'titulo': 'Video teste 3',
         'descricao': 'Meu terceiro video',
         'url': 'url test 3',
@@ -52,7 +43,18 @@ def test_videos_POST_not_valid_json_more_fields(client, videos):
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
-    assert b'something wrong' in response.data
+    assert b'json body not allowed' in response.data
+
+def test_videos_POST_not_valid_json_with_blank_field(client, videos):
+    data = {
+        'id': 3,
+        'titulo': '',
+        'descricao': 'Meu terceiro video',
+        'url': 'url test 3'
+    }
+    response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 400
+    assert b'json body not allowed' in response.data
 
 def test_videos_PUT_with_valid_json(client, videos):
     data = {
