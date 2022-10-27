@@ -1,4 +1,5 @@
 import json
+from urllib import response
 
 
 def test_videos_GET(client, videos):
@@ -110,3 +111,21 @@ def test_videos_PATCH_with_valid_json(client, videos):
     assert b'Video teste 1 atualizado' in response.data
     assert b'Meu primeiro video' in response.data
     assert b'url test 1' in response.data
+
+def test_videos_PATCH_with_not_valid_json_blank_fields(client, videos):
+    data = {
+        'titulo': ''
+    }
+    response = client.patch('/videos/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 400
+    assert b'json body not allowed' in response.data
+
+def test_videos_DELETE(client, videos):
+    response = client.delete('/videos/1')
+    assert response.status_code == 200
+    assert b'successfully deleted' in response.data
+
+def test_videos_DELETE_wrong_id(client, videos):
+    response = client.delete('/videos/4')
+    assert response.status_code == 404
+    assert b'fail to delete, video not found' in response.data

@@ -79,6 +79,14 @@ def update_video_by_id(id):
         return jsonify({'message': 'something wrong'}), 400
     return jsonify(video.serializer()), 200
     
-@videos.patch('/<int:id>')
-def update_video_by_id_patch(id):
-    data = request.get_json()
+@videos.delete('/<int:id>')
+def delete_video_by_id(id):
+    video = Videos.query.get(id)
+    if not video:
+        return jsonify({'message': 'fail to delete, video not found'}), 404
+    try:
+        db.session.delete(video)
+        db.session.commit()
+    except:
+        return jsonify({'message': 'something wrong'}), 400
+    return jsonify({'message': 'successfully deleted'}), 200
