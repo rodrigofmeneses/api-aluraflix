@@ -8,11 +8,13 @@ videos = Blueprint('videos', __name__, url_prefix='/videos')
 
 @videos.get('/')
 def get_all_videos():
+    '''Get all videos.'''
     videos = Videos.query.all()
     return jsonify([video.serializer() for video in videos]), 200
 
 @videos.get('/<int:id>')
 def get_video_by_id(id):
+    '''Get video by id.'''
     video = Videos.query.get(id)
     if not video:
         return jsonify({'message': 'video not found'}), 404
@@ -20,6 +22,9 @@ def get_video_by_id(id):
 
 @videos.post('/')
 def add_video():
+    '''Add video with POST method. Request JSON body must be validade.
+    Validation consists in all fields present without nullable values.
+    '''
     data = request.get_json()
     if not validate_json(data):
         return jsonify({'message': 'json body not allowed, key error'}), 400
@@ -38,7 +43,7 @@ def add_video():
 
 @videos.put('/<int:id>')
 def update_video_by_id(id):
-    '''Update video by ID. request JSON body must be validade.
+    '''Update video by id with POST method. Request JSON body must be validade.
     Validation consists in all fields present without nullable values.
     
         Args:

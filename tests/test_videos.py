@@ -24,7 +24,7 @@ def test_videos_POST_with_valid_json(client, videos):
     assert b'Meu terceiro video' in response.data
     assert b'url teste 3' in response.data
 
-def test_videos_POST_not_valid_json_missing_field(client, videos):
+def test_videos_POST_with_not_valid_json_missing_field(client, videos):
     data = {
         'titulo': 'Video teste 3',
         'url': 'url teste 3'
@@ -33,7 +33,7 @@ def test_videos_POST_not_valid_json_missing_field(client, videos):
     assert response.status_code == 400
     assert b'json body not allowed' in response.data
 
-def test_videos_POST_not_valid_json_more_fields(client, videos):
+def test_videos_POST_with_not_valid_json_more_fields(client, videos):
     data = {
         'id': 3,
         'titulo': 'Video teste 3',
@@ -45,7 +45,7 @@ def test_videos_POST_not_valid_json_more_fields(client, videos):
     assert response.status_code == 400
     assert b'json body not allowed' in response.data
 
-def test_videos_POST_not_valid_json_with_blank_field(client, videos):
+def test_videos_POST_with_not_valid_json_blank_fields(client, videos):
     data = {
         'id': 3,
         'titulo': '',
@@ -68,3 +68,35 @@ def test_videos_PUT_with_valid_json(client, videos):
     assert b'Video teste 1 atualizado' in response.data
     assert b'Meu terceiro video atualizado' in response.data
     assert b'url teste' in response.data
+
+def test_videos_PUT_with_not_valid_json_missing_fields(client, videos):
+    data = {
+        'id': 1,
+        'descricao': 'Meu terceiro video atualizado',
+        'url': 'url teste 1'
+    }
+    response = client.put('/videos/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 400
+    assert b'json body not allowed' in response.data
+    
+def test_videos_PUT_with_not_valid_json_more_fields(client, videos):
+    data = {
+        'id': 1,
+        'descricao': 'Meu terceiro video atualizado',
+        'url': 'url teste 1',
+        'ola': 123
+    }
+    response = client.put('/videos/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 400
+    assert b'json body not allowed' in response.data
+    
+def test_videos_PUT_with_not_valid_json_blank_fields(client, videos):
+    data = {
+        'id': 1,
+        'descricao': '',
+        'url': 'url teste 1'
+    }
+    response = client.put('/videos/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 400
+    assert b'json body not allowed' in response.data
+    
