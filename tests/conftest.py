@@ -22,16 +22,14 @@ def client():
 def videos(client):
     videos = [
         Videos(
-            id=1,
             titulo='Video teste 1',
             descricao='Meu primeiro video',
-            url='url test 1'
+            url='https://www.google.com/'
         ),
         Videos(
-            id=2,
             titulo='Video teste 2',
             descricao='Meu segundo video',
-            url='url test 2'
+            url='https://www.google.com/'
         ),
     ]
     db.session.bulk_save_objects(videos)

@@ -1,8 +1,7 @@
-def titulo_validate(titulo):
-    return titulo
+from app.models import Videos
+from marshmallow import validate, ValidationError
 
-def descricao_validate(descricao):
-    return descricao
 
-def url_validate(url):
-    return url
+def must_not_blank(data):
+    if not data:
+        raise ValidationError('Must not blank.')
