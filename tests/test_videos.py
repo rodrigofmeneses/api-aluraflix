@@ -1,5 +1,6 @@
 import json
 from urllib import response
+from pytest import mark
 
 
 def test_videos_GET(client, videos):
@@ -32,7 +33,7 @@ def test_videos_POST_with_not_valid_json_missing_field(client, videos):
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
-    assert b'json body not allowed' in response.data
+    assert b'Missing data for required field.' in response.data
 
 def test_videos_POST_with_not_valid_json_more_fields(client, videos):
     data = {
@@ -44,8 +45,9 @@ def test_videos_POST_with_not_valid_json_more_fields(client, videos):
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
-    assert b'json body not allowed' in response.data
+    assert b'Unknown field.' in response.data
 
+@mark.c
 def test_videos_POST_with_not_valid_json_blank_fields(client, videos):
     data = {
         'id': 3,
@@ -55,7 +57,7 @@ def test_videos_POST_with_not_valid_json_blank_fields(client, videos):
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
-    assert b'json body not allowed' in response.data
+    assert b'Titulo invalido' in response.data
 
 def test_videos_PUT_with_valid_json(client, videos):
     data = {
