@@ -1,21 +1,20 @@
 from app.ext.serializer import ma
-from app.models import Video
+from app.models import Categoria
 
-from marshmallow import post_load, validates_schema, ValidationError, fields
+from marshmallow import post_load
 from .validators import must_not_blank
 
 
-class VideoSchema(ma.SQLAlchemyAutoSchema):
+class CategoriaSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = Video
+        model = Categoria
     id = ma.auto_field(dump_only=True)
     titulo = ma.auto_field(required=True, validate=[must_not_blank])
     descricao = ma.auto_field(required=True, validate=[must_not_blank])
-    url = fields.Url(required=True)
     
     @post_load
     def make_user(self, data, **kwargs):
-        return Video(**data)
+        return Categoria(**data)
         
 
-video_schema = VideoSchema()
+categoria_schema = CategoriaSchema()

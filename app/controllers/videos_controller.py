@@ -1,8 +1,7 @@
-from flask import Blueprint, jsonify, request, json
+from flask import Blueprint, jsonify, request
 from marshmallow import ValidationError
 
-from app.controllers.utils import validate_json
-from app.models import Videos
+from app.models import Video
 from app.ext.database import db
 from app.ext.schemas.videos_schema import video_schema
 
@@ -12,13 +11,13 @@ videos = Blueprint('videos', __name__, url_prefix='/videos')
 @videos.get('/')
 def get_all_videos():
     '''Get all videos.'''
-    videos = Videos.query.all()
+    videos = Video.query.all()
     return video_schema.dump(videos, many=True), 200
 
 @videos.get('/<int:id>')
 def get_video_by_id(id):
     '''Get video by id.'''
-    video = Videos.query.get(id)
+    video = Video.query.get(id)
     if not video:
         return jsonify({'message': 'video not found'}), 404
     return video_schema.dump(video), 200
@@ -51,7 +50,7 @@ def update_video_by_id(id):
     '''
         
     json_data = request.get_json()
-    video = Videos.query.get(id)
+    video = Video.query.get(id)
     
     if not video:
         return jsonify({'message': 'video not found'}), 404
@@ -75,7 +74,7 @@ def update_video_by_id(id):
     
 @videos.delete('/<int:id>')
 def delete_video_by_id(id):
-    video = Videos.query.get(id)
+    video = Video.query.get(id)
     if not video:
         return jsonify({'message': 'fail to delete, video not found'}), 404
     db.session.delete(video)

@@ -1,10 +1,21 @@
 from app.ext.database import db
 
 
-class Videos(db.Model):
+class Video(db.Model):
     __tablename__ = 'videos'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     titulo = db.Column(db.String(50), nullable=False)
     descricao = db.Column(db.String(255), nullable=False)
     url = db.Column(db.String(255), nullable=False)
+    id_categoria = db.Column(db.Integer, db.ForeignKey("categorias.id"))
+
+
+
+class Categoria(db.Model):
+    __tablename__ = 'categorias'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    titulo = db.Column(db.String(50), nullable=False)
+    cor = db.Column(db.String(50), nullable=False)
+    video = db.relationship("Video", backref="categoria")

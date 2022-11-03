@@ -1,9 +1,8 @@
-from flask import session
 from app import create_app
 from app.ext.database import db
 from pytest import fixture
 
-from app.models import Videos
+from app.models import Video
 
 
 @fixture(scope='module')
@@ -21,12 +20,12 @@ def client():
 @fixture
 def videos(client):
     videos = [
-        Videos(
+        Video(
             titulo='Video teste 1',
             descricao='Meu primeiro video',
             url='https://www.google.com/'
         ),
-        Videos(
+        Video(
             titulo='Video teste 2',
             descricao='Meu segundo video',
             url='https://www.google.com/'
@@ -38,7 +37,7 @@ def videos(client):
     yield videos
 
     try:
-        for video in Videos.query.all():
+        for video in Video.query.all():
             db.session.delete(video)
         db.session.commit()
     except:

@@ -1,5 +1,4 @@
-from app.models import Videos
-from marshmallow import validate, ValidationError
+from marshmallow import ValidationError
 
 
 def must_not_blank(data):
