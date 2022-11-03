@@ -1,10 +1,17 @@
 from app.ext.database import db
-from app.models import Video
+from app.models import Video, Categoria
 
 
 def create_db():
     '''Create database'''
     db.create_all()
+    # Default Category
+    categoria = Categoria(
+        titulo='LIVRE',
+        cor='white'
+    )
+    db.session.add(categoria)
+    db.session.commit()
 
 def drop_db():
     '''Drop database'''
@@ -12,6 +19,7 @@ def drop_db():
 
 def populate_db():
     '''Populate database'''
+    
     videos = [
         Video(
             titulo='Video teste 1',
