@@ -44,7 +44,7 @@ def test_videos_POST_with_valid_json_and_category_id(client, videos):
     assert b'Meu terceiro video' in response.data
     assert b'"categoria_id": 2' in response.data
 
-def test_videos_POST_with_not_valid_json_missing_field(client, videos):
+def test_videos_POST_with_invalid_json_missing_field(client, videos):
     data = {
         'titulo': 'Video teste 3',
         'url': 'https://www.google.com/'
@@ -53,7 +53,7 @@ def test_videos_POST_with_not_valid_json_missing_field(client, videos):
     assert response.status_code == 400
     assert b'Missing data for required field.' in response.data
 
-def test_videos_POST_with_not_valid_json_more_fields(client, videos):
+def test_videos_POST_with_invalid_json_more_fields(client, videos):
     data = {
         'titulo': 'Video teste 3',
         'descricao': 'Meu terceiro video',
@@ -64,7 +64,7 @@ def test_videos_POST_with_not_valid_json_more_fields(client, videos):
     assert response.status_code == 400
     assert b'Unknown field.' in response.data
 
-def test_videos_POST_with_not_valid_json_blank_fields(client, videos):
+def test_videos_POST_with_invalid_json_blank_fields(client, videos):
     data = {
         'titulo': '',
         'descricao': 'Meu terceiro video',
@@ -86,7 +86,17 @@ def test_videos_PUT_with_valid_json(client, videos):
     assert b'Meu terceiro video atualizado' in response.data
     assert b'https://www.google.com/' in response.data
 
-def test_videos_PUT_with_not_valid_json_missing_fields(client, videos):
+def test_videos_PUT_with_invalid_json_with_invalid_id(client, videos):
+    data = {
+        'titulo': 'Video teste 1 atualizado',
+        'descricao': 'Meu terceiro video atualizado',
+        'url': 'https://www.google.com/'
+    }
+    response = client.put('/videos/15', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 404
+    assert b'video not found' in response.data
+
+def test_videos_PUT_with_invalid_json_missing_fields(client, videos):
     data = {
         'descricao': 'Meu terceiro video atualizado',
         'url': 'https://www.google.com/'
@@ -95,7 +105,7 @@ def test_videos_PUT_with_not_valid_json_missing_fields(client, videos):
     assert response.status_code == 400
     assert b'Missing data for required field.' in response.data
     
-def test_videos_PUT_with_not_valid_json_more_fields(client, videos):
+def test_videos_PUT_with_invalid_json_more_fields(client, videos):
     data = {
         'descricao': 'Meu terceiro video atualizado',
         'url': 'https://www.google.com/',
@@ -105,7 +115,7 @@ def test_videos_PUT_with_not_valid_json_more_fields(client, videos):
     assert response.status_code == 400
     assert b'Unknown field' in response.data
     
-def test_videos_PUT_with_not_valid_json_blank_fields(client, videos):
+def test_videos_PUT_with_invalid_json_blank_fields(client, videos):
     data = {
         'descricao': '',
         'url': 'https://www.google.com/'
@@ -125,7 +135,7 @@ def test_videos_PATCH_with_valid_json(client, videos):
     assert b'Meu primeiro video' in response.data
     assert b'https://www.google.com/' in response.data
 
-def test_videos_PATCH_with_not_valid_json_blank_fields(client, videos):
+def test_videos_PATCH_with_invalid_json_blank_fields(client, videos):
     data = {
         'titulo': ''
     }

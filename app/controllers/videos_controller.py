@@ -44,7 +44,6 @@ def add_video():
     db.session.add(video)
     db.session.commit()
     return video_schema.dump(video), 201
-    
 
 @videos.route('/<int:id>', methods=['PUT', 'PATCH'])
 def update_video_by_id(id):
@@ -59,23 +58,19 @@ def update_video_by_id(id):
     
     if not video:
         return jsonify({'message': 'video not found'}), 404
-    match request.method:
-        case 'PUT':
-            try:
+    try:
+        match request.method:
+            case 'PUT':
                 video_schema.load(json_data)
-            except ValidationError as err:
-                return err.messages, 400
-        case 'PATCH':
-            try:
+            case 'PATCH':
                 video_schema.load(json_data, partial=True)
-            except ValidationError as err:
-                return err.messages, 400
+    except ValidationError as err:
+        return err.messages, 400
     
     video.query.update(json_data)
     db.session.commit()
     return video_schema.dump(video), 200
 
-    
 @videos.delete('/<int:id>')
 def delete_video_by_id(id):
     video = Video.query.get(id)

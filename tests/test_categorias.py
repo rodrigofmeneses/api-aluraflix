@@ -28,7 +28,7 @@ def test_categorias_POST_with_valid_json(client, categorias):
     assert b'Terror' in response.data
     assert b'black' in response.data
 
-def test_categorias_POST_with_not_valid_json_missing_field(client, categorias):
+def test_categorias_POST_with_invalid_json_missing_field(client, categorias):
     data = {
         'titulo': 'Terror',
     }
@@ -36,7 +36,7 @@ def test_categorias_POST_with_not_valid_json_missing_field(client, categorias):
     assert response.status_code == 400
     assert b'Missing data for required field.' in response.data
 
-def test_categorias_POST_with_not_valid_json_more_fields(client, categorias):
+def test_categorias_POST_with_invalid_json_more_fields(client, categorias):
     data = {
         'titulo': 'Video teste 3',
         'cor': 'black',
@@ -46,7 +46,7 @@ def test_categorias_POST_with_not_valid_json_more_fields(client, categorias):
     assert response.status_code == 400
     assert b'Unknown field.' in response.data
 
-def test_categorias_POST_with_not_valid_json_blank_fields(client, categorias):
+def test_categorias_POST_with_invalid_json_blank_fields(client, categorias):
     data = {
         'titulo': '',
         'cor': ''
@@ -54,3 +54,49 @@ def test_categorias_POST_with_not_valid_json_blank_fields(client, categorias):
     response = client.post('/categorias/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'Must not blank' in response.data
+
+def test_categorias_PUT_with_valid_json(client, categorias):
+    data = {
+        'titulo': 'Titulo atualizado',
+        'cor': 'Cor atualizada'
+    }
+    response = client.put('/categorias/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 200
+    assert b'Titulo atualizado' in response.data
+    assert b'Cor atualizada' in response.data
+
+def test_categorias_PUT_with_invalid_json_invalid_id(client, categorias):
+    data = {
+        'titulo': 'Terror',
+        'cor': 'black'
+    }
+    response = client.put('/categorias/15', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 404
+    assert b'categoria not found' in response.data
+
+def test_categorias_PUT_with_invalid_json_missing_fields(client, categorias):
+    data = {
+        'titulo': 'Terror',
+    }
+    response = client.put('/categorias/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 400
+    assert b'Missing data for required field.' in response.data
+    
+def test_categorias_PUT_with_invalid_json_more_fields(client, categorias):
+    data = {
+        'titulo': 'Terror',
+        'cor': 'black',
+        'ola': 123
+    }
+    response = client.put('/categorias/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 400
+    assert b'Unknown field' in response.data
+    
+def test_categorias_PUT_with_invalid_json_blank_fields(client, categorias):
+    data = {
+        'titulo': '',
+        'cor': 'black'
+    }
+    response = client.put('/categorias/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 400
+    assert b'Must not blank.' in response.data
