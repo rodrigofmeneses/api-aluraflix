@@ -16,7 +16,7 @@ def get_all_categories():
             Response JSON with all categorias and status code.
     '''
     categorias = Categoria.query.all()
-    return categoria_schema.dump(categorias, many=True), 200
+    return {'categorias': categoria_schema.dump(categorias, many=True)}, 200
 
 @categorias.get('/<int:id>')
 def get_category_by_id(id: int):

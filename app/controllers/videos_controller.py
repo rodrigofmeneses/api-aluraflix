@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from marshmallow import ValidationError
+from werkzeug.exceptions import BadRequestKeyError
 
 from app.models import Video
 from app.ext.database import db
@@ -14,8 +15,18 @@ def get_all_videos():
         Return:
             Response JSON with all videos and status code.
     '''
-    videos = Video.query.all()
-    return video_schema.dump(videos, many=True), 200
+    if not request.args:
+        all_videos = Video.query.all()
+        return {'videos': video_schema.dump(all_videos, many=True)}, 200
+    
+    try:
+        target = request.args['search']
+    except BadRequestKeyError:
+        return {'message': 'to filter a video use ?search=video_title'}, 400
+    
+    filter_videos = Video.query.filter(Video.titulo.like(f'%{target}%')).all()
+    return {'videos': video_schema.dump(filter_videos, many=True)}, 200 
+    
 
 @videos.get('/<int:id>')
 def get_video_by_id(id):

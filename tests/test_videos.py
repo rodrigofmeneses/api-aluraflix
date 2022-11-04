@@ -18,6 +18,21 @@ def test_videos_GET_by_id_with_invalid_id(client, videos):
     assert response.status_code == 404
     assert b'video not found' in response.data
 
+def test_videos_GET_filter_search_teste_1(client, videos):
+    response = client.get('/videos/?search=teste 1')
+    assert response.status_code == 200
+    assert b'teste 1' in response.data
+
+def test_videos_GET_filter_with_no_data_search_teste_4(client, videos):
+    response = client.get('/videos/?search=teste 4')
+    assert response.status_code == 200
+    assert b'[]' in response.data
+
+def test_videos_GET_filter_with_wrong_querystring_asdf(client, videos):
+    response = client.get('/videos/?asdf=teste 1')
+    assert response.status_code == 400
+    assert b'to filter a video use ?search=video_title' in response.data
+
 def test_videos_POST_with_valid_json(client, videos):
     data = {
         'titulo': 'Video teste 3',

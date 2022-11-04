@@ -10,6 +10,9 @@ class Video(db.Model):
     url = db.Column(db.String(255), nullable=False)
     categoria_id = db.Column(db.Integer, db.ForeignKey("categorias.id"), default=1)
 
+    def __repr__(self) -> str:
+        return f'<Video {self.titulo}>'
+
 
 
 class Categoria(db.Model):
