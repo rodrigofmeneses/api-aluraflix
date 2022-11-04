@@ -12,7 +12,7 @@ def test_videos_GET_by_id(client, videos):
     response = client.get('/videos/2')
     assert response.status_code == 200
     assert b'Video teste 2' in response.data
-
+@mark.c
 def test_videos_POST_with_valid_json(client, videos):
     data = {
         'titulo': 'Video teste 3',
@@ -24,6 +24,20 @@ def test_videos_POST_with_valid_json(client, videos):
     assert b'Video teste 3' in response.data
     assert b'Meu terceiro video' in response.data
     assert b'https://www.google.com/' in response.data
+    assert b'"categoria_id": 1' in response.data
+
+def test_videos_POST_with_valid_json_and_category_id(client, videos):
+    data = {
+        'titulo': 'Video teste 3',
+        'descricao': 'Meu terceiro video',
+        'url': 'https://www.google.com/',
+        'categoria_id': 2
+    }
+    response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 201
+    assert b'Video teste 3' in response.data
+    assert b'Meu terceiro video' in response.data
+    assert b'"categoria_id": 2' in response.data
 
 def test_videos_POST_with_not_valid_json_missing_field(client, videos):
     data = {

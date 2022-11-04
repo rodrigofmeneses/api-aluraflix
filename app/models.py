@@ -8,7 +8,7 @@ class Video(db.Model):
     titulo = db.Column(db.String(50), nullable=False)
     descricao = db.Column(db.String(255), nullable=False)
     url = db.Column(db.String(255), nullable=False)
-    id_categoria = db.Column(db.Integer, db.ForeignKey("categorias.id"), default=1)
+    categoria_id = db.Column(db.Integer, db.ForeignKey("categorias.id"), default=1)
 
 
 
