@@ -18,4 +18,4 @@ class Categoria(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     titulo = db.Column(db.String(50), nullable=False)
     cor = db.Column(db.String(50), nullable=False)
-    video = db.relationship("Video", backref="categoria")
+    videos = db.relationship("Video", backref="categoria")

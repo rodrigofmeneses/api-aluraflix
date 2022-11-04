@@ -127,3 +127,11 @@ def test_categorias_DELETE_wrong_id(client, categorias):
     response = client.delete('/categorias/4')
     assert response.status_code == 404
     assert b'fail to delete, categoria not found' in response.data
+
+def test_categorias_GET_all_videos_by_category_id(client, categorias, videos):
+    response = client.get('/categorias/2/videos')
+    assert response.status_code == 200
+    assert b'Video teste 2' in response.data
+    assert b'Meu segundo video' in response.data
+    assert b'Video teste 3' in response.data
+    assert b'Meu terceiro video' in response.data

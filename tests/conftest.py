@@ -62,6 +62,12 @@ def videos(client, categorias):
             url='https://www.google.com/',
             categoria_id=2
         ),
+        Video(
+            titulo='Video teste 3',
+            descricao='Meu terceiro video',
+            url='https://www.google.com/',
+            categoria_id=2
+        ),
     ]
     db.session.bulk_save_objects(videos)
     db.session.commit()

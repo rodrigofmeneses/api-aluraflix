@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify, request
 from marshmallow import ValidationError
 
-from app.models import Categoria
 from app.ext.database import db
 from app.ext.schemas.categorias_schema import categoria_schema
+from app.ext.schemas.videos_schema import video_schema
+from app.models import Categoria
 
 
 categorias = Blueprint('categorias', __name__, url_prefix='/categorias')
@@ -18,7 +19,7 @@ def get_all_categories():
     return categoria_schema.dump(categorias, many=True), 200
 
 @categorias.get('/<int:id>')
-def get_category_by_id(id):
+def get_category_by_id(id: int):
     '''Get category by id.
         Args:
             id (int): Categoria id.
@@ -29,6 +30,19 @@ def get_category_by_id(id):
     if not categoria:
         return jsonify({'message': 'categoria not found'}), 404
     return categoria_schema.dump(categoria), 200
+
+@categorias.get('/<int:id>/videos')
+def get_all_videos_by_category(id: int):
+    '''Get all videos by category.
+        Args:
+            id (int): Categoria id.
+        Return:
+            Response JSON with all videos of category id
+    '''
+    categoria = Categoria.query.get(id)
+    if not categoria:
+        return jsonify({'message': 'categoria not found'}), 404
+    return {'videos': video_schema.dump(categoria.videos, many=True)}, 200
 
 @categorias.post('/')
 def add_categoria():
@@ -46,7 +60,7 @@ def add_categoria():
     return categoria_schema.dump(categoria), 201
 
 @categorias.route('/<int:id>', methods=['PUT', 'PATCH'])
-def update_categoria_by_id(id):
+def update_categoria_by_id(id: int):
     '''Update categoria by id with POST
         Args:
             id (int): Categoria id.
@@ -72,7 +86,7 @@ def update_categoria_by_id(id):
     return categoria_schema.dump(categoria), 200
 
 @categorias.delete('/<int:id>')
-def delete_categoria_by_id(id):
+def delete_categoria_by_id(id: int):
     categoria = Categoria.query.get(id)
     if not categoria:
         return jsonify({'message': 'fail to delete, categoria not found'}), 404
