@@ -51,7 +51,7 @@ def update_categoria_by_id(id):
         Args:
             id (int): Categoria id.
         Return:
-            Response JSON with updated video or error message and status code.
+            Response JSON with updated categoria or error message and status code.
     '''
     json_data = request.get_json()
     categoria = Categoria.query.get(id)
@@ -70,3 +70,12 @@ def update_categoria_by_id(id):
     categoria.query.update(json_data)
     db.session.commit()
     return categoria_schema.dump(categoria), 200
+
+@categorias.delete('/<int:id>')
+def delete_categoria_by_id(id):
+    categoria = Categoria.query.get(id)
+    if not categoria:
+        return jsonify({'message': 'fail to delete, categoria not found'}), 404
+    db.session.delete(categoria)
+    db.session.commit()
+    return jsonify({'message': 'successfully deleted'}), 200

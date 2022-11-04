@@ -117,3 +117,13 @@ def test_categorias_PATCH_with_invalid_json_blank_fields(client, categorias):
     response = client.patch('/categorias/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'Must not blank' in response.data
+
+def test_categorias_DELETE(client, categorias):
+    response = client.delete('/categorias/1')
+    assert response.status_code == 200
+    assert b'successfully deleted' in response.data
+
+def test_categorias_DELETE_wrong_id(client, categorias):
+    response = client.delete('/categorias/4')
+    assert response.status_code == 404
+    assert b'fail to delete, categoria not found' in response.data
