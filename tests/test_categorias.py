@@ -100,3 +100,20 @@ def test_categorias_PUT_with_invalid_json_blank_fields(client, categorias):
     response = client.put('/categorias/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'Must not blank.' in response.data
+
+def test_categorias_PATCH_with_valid_json(client, categorias):
+    data = {
+        'cor': 'green'
+    }
+    response = client.patch('/categorias/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 200
+    assert b'"id": 1' in response.data
+    assert b'green' in response.data
+
+def test_categorias_PATCH_with_invalid_json_blank_fields(client, categorias):
+    data = {
+        'cor': '',
+    }
+    response = client.patch('/categorias/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 400
+    assert b'Must not blank' in response.data

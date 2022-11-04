@@ -132,8 +132,6 @@ def test_videos_PATCH_with_valid_json(client, videos):
     assert response.status_code == 200
     assert b'"id": 1' in response.data
     assert b'Video teste 1 atualizado' in response.data
-    assert b'Meu primeiro video' in response.data
-    assert b'https://www.google.com/' in response.data
 
 def test_videos_PATCH_with_invalid_json_blank_fields(client, videos):
     data = {
@@ -142,6 +140,15 @@ def test_videos_PATCH_with_invalid_json_blank_fields(client, videos):
     response = client.patch('/videos/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'Must not blank' in response.data
+
+def test_videos_PATCH_with_invalid_json_blank_fields(client, videos):
+    data = {
+        'descricao': '',
+        'url': 'https://www.google.com/'
+    }
+    response = client.patch('/videos/1', data=json.dumps(data), content_type='application/json')
+    assert response.status_code == 400
+    assert b'Must not blank.' in response.data
 
 def test_videos_DELETE(client, videos):
     response = client.delete('/videos/1')
