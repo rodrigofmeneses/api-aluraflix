@@ -21,8 +21,8 @@ def client():
 def categorias(client):
     categorias = [
         Categoria(
-        titulo='LIVRE',
-        cor='white'
+            titulo='LIVRE',
+            cor='white'
         ),
         Categoria(
             titulo='Categoria teste 1',

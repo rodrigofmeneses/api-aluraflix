@@ -10,13 +10,21 @@ videos = Blueprint('videos', __name__, url_prefix='/videos')
 
 @videos.get('/')
 def get_all_videos():
-    '''Get all videos.'''
+    '''Get all videos.
+        Return:
+            Response JSON with all videos and status code.
+    '''
     videos = Video.query.all()
     return video_schema.dump(videos, many=True), 200
 
 @videos.get('/<int:id>')
 def get_video_by_id(id):
-    '''Get video by id.'''
+    '''Get video by id.
+        Args:
+            id (int): Video id.
+        Return:
+            Response JSON with video or error message and status code.
+    '''
     video = Video.query.get(id)
     if not video:
         return jsonify({'message': 'video not found'}), 404
@@ -24,8 +32,9 @@ def get_video_by_id(id):
 
 @videos.post('/')
 def add_video():
-    '''Add video with POST method. Request JSON body must be validade.
-    Validation consists in all fields present without nullable values.
+    '''Add video with POST method.
+        Return:
+            Response JSON with added video or error message and status code.
     '''
     json_data = request.get_json()
     try:
@@ -39,16 +48,12 @@ def add_video():
 
 @videos.route('/<int:id>', methods=['PUT', 'PATCH'])
 def update_video_by_id(id):
-    '''Update video by id with POST method. Request JSON body must be validade.
-    Validation consists in all fields present without nullable values.
-    
+    '''Update video by id with PUT and PATCH methods.
         Args:
             id (int): Video id.
-
         Return:
             Response JSON with updated video or error message and status code.
     '''
-        
     json_data = request.get_json()
     video = Video.query.get(id)
     
@@ -57,7 +62,6 @@ def update_video_by_id(id):
     match request.method:
         case 'PUT':
             try:
-                # breakpoint()
                 video_schema.load(json_data)
             except ValidationError as err:
                 return err.messages, 400

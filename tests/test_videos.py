@@ -12,7 +12,12 @@ def test_videos_GET_by_id(client, videos):
     response = client.get('/videos/2')
     assert response.status_code == 200
     assert b'Video teste 2' in response.data
-@mark.c
+
+def test_videos_GET_by_id_with_invalid_id(client, videos):
+    response = client.get('/videos/15')
+    assert response.status_code == 404
+    assert b'video not found' in response.data
+
 def test_videos_POST_with_valid_json(client, videos):
     data = {
         'titulo': 'Video teste 3',

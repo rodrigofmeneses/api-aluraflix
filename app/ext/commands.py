@@ -5,7 +5,6 @@ from app.models import Video, Categoria
 def create_db():
     '''Create database'''
     db.create_all()
-    # Default Category
     categoria = Categoria(
         titulo='LIVRE',
         cor='white'
@@ -19,7 +18,16 @@ def drop_db():
 
 def populate_db():
     '''Populate database'''
-    
+    categorias = [
+        Categoria(
+            titulo='Categoria test 1',
+            cor='black'
+        ),
+        Categoria(
+            titulo='Categoria test 2',
+            cor='brown'
+        ),
+    ]
     videos = [
         Video(
             titulo='Video teste 1',
@@ -32,6 +40,7 @@ def populate_db():
             url='https://www.youtube.com/watch?v=xFrGuyw1V8s'
         ),
     ]
+    db.session.bulk_save_objects(categorias)
     db.session.bulk_save_objects(videos)
     db.session.commit()
 
