@@ -81,7 +81,7 @@ def update_categoria_by_id(id: int):
     except ValidationError as err:
         return err.messages, 400
     
-    categoria.query.update(json_data)
+    Categoria.query.filter_by(id=id).update(json_data)
     db.session.commit()
     return categoria_schema.dump(categoria), 200
 

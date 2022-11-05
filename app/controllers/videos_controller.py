@@ -77,8 +77,8 @@ def update_video_by_id(id):
                 video_schema.load(json_data, partial=True)
     except ValidationError as err:
         return err.messages, 400
-    
-    video.query.update(json_data)
+    # breakpoint()
+    Video.query.filter_by(id=id).update(json_data)
     db.session.commit()
     return video_schema.dump(video), 200
 
