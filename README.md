@@ -57,7 +57,7 @@ Após baixar e entrar na raiz do projeto, crie um ambiente virtual e ative-o:
 
 ```
 $ python -m venv venv
-$ venv/script/activate # Windows
+$ venv/scripts/activate # Windows
 $ source venv/bin/activate # Linux
 ```
 Em seguida instale as dependências:
