@@ -15,7 +15,7 @@ class VideoSchema(ma.SQLAlchemyAutoSchema):
     categoria_id = ma.auto_field()
     
     @post_load
-    def make_user(self, data, **kwargs):
+    def make_video(self, data, **kwargs):
         return Video(**data)
         
 

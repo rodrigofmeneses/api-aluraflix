@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request
 from marshmallow import ValidationError
 
 from app.ext.database import db
@@ -28,7 +28,7 @@ def get_category_by_id(id: int):
     '''
     categoria = Categoria.query.get(id)
     if not categoria:
-        return jsonify({'message': 'categoria not found'}), 404
+        return {'message': 'categoria not found'}, 404
     return categoria_schema.dump(categoria), 200
 
 @categorias.get('/<int:id>/videos')
@@ -41,7 +41,7 @@ def get_all_videos_by_category(id: int):
     '''
     categoria = Categoria.query.get(id)
     if not categoria:
-        return jsonify({'message': 'categoria not found'}), 404
+        return {'message': 'categoria not found'}, 404
     return {'videos': video_schema.dump(categoria.videos, many=True)}, 200
 
 @categorias.post('/')
@@ -71,7 +71,7 @@ def update_categoria_by_id(id: int):
     categoria = Categoria.query.get(id)
     
     if not categoria:
-        return jsonify({'message': 'categoria not found'}), 404
+        return {'message': 'categoria not found'}, 404
     try:
         match request.method:
             case 'PUT':
@@ -89,7 +89,7 @@ def update_categoria_by_id(id: int):
 def delete_categoria_by_id(id: int):
     categoria = Categoria.query.get(id)
     if not categoria:
-        return jsonify({'message': 'fail to delete, categoria not found'}), 404
+        return {'message': 'fail to delete, categoria not found'}, 404
     db.session.delete(categoria)
     db.session.commit()
-    return jsonify({'message': 'successfully deleted'}), 200
+    return {'message': 'successfully deleted'}, 200

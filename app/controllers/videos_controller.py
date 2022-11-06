@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request
 from marshmallow import ValidationError
 from werkzeug.exceptions import BadRequestKeyError
 
@@ -38,7 +38,7 @@ def get_video_by_id(id):
     '''
     video = Video.query.get(id)
     if not video:
-        return jsonify({'message': 'video not found'}), 404
+        return {'message': 'video not found'}, 404
     return video_schema.dump(video), 200
 
 @videos.post('/')
@@ -68,7 +68,7 @@ def update_video_by_id(id):
     video = Video.query.get(id)
     
     if not video:
-        return jsonify({'message': 'video not found'}), 404
+        return {'message': 'video not found'}, 404
     try:
         match request.method:
             case 'PUT':
@@ -77,7 +77,7 @@ def update_video_by_id(id):
                 video_schema.load(json_data, partial=True)
     except ValidationError as err:
         return err.messages, 400
-    # breakpoint()
+
     Video.query.filter_by(id=id).update(json_data)
     db.session.commit()
     return video_schema.dump(video), 200
@@ -86,7 +86,7 @@ def update_video_by_id(id):
 def delete_video_by_id(id):
     video = Video.query.get(id)
     if not video:
-        return jsonify({'message': 'fail to delete, video not found'}), 404
+        return {'message': 'fail to delete, video not found'}, 404
     db.session.delete(video)
     db.session.commit()
-    return jsonify({'message': 'successfully deleted'}), 200
+    return {'message': 'successfully deleted'}, 200
