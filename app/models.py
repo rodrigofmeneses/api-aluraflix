@@ -5,20 +5,17 @@ class Video(db.Model):
     __tablename__ = 'videos'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    titulo = db.Column(db.String(50), nullable=False)
-    descricao = db.Column(db.String(255), nullable=False)
+    title = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(255), nullable=False)
     url = db.Column(db.String(255), nullable=False)
-    categoria_id = db.Column(db.Integer, db.ForeignKey("categorias.id"), default=1)
-
-    def __repr__(self) -> str:
-        return f'<Video {self.titulo}>'
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), default=1)
 
 
 
-class Categoria(db.Model):
-    __tablename__ = 'categorias'
+class Category(db.Model):
+    __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    titulo = db.Column(db.String(50), nullable=False)
-    cor = db.Column(db.String(50), nullable=False)
-    videos = db.relationship("Video", backref="categoria")
+    title = db.Column(db.String(50), nullable=False)
+    color = db.Column(db.String(50), nullable=False)
+    videos = db.relationship("Video", backref="category")

@@ -9,10 +9,10 @@ class VideoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Video
     id = ma.auto_field(dump_only=True)
-    titulo = ma.auto_field(validate=[not_blank])
-    descricao = ma.auto_field(validate=[not_blank])
+    title = ma.auto_field(validate=[not_blank])
+    description = ma.auto_field(validate=[not_blank])
     url = fields.URL(required=True)
-    categoria_id = ma.auto_field()
+    category_id = ma.auto_field()
     
     @post_load
     def make_video(self, data, **kwargs):

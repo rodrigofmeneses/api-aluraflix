@@ -22,7 +22,7 @@ def get_videos():
 
     query = Video.query
     if search:
-        query = Video.query.filter(Video.titulo.like(f'%{search}%'))
+        query = Video.query.filter(Video.title.like(f'%{search}%'))
     
     try:
         videos = query.paginate(page=page, per_page=ROWS_PER_PAGE)

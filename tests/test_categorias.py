@@ -2,134 +2,134 @@ import json
 from pytest import mark
 
 
-def test_categorias_GET(client, categorias):
-    response = client.get('/categorias/')
+def test_categories_GET(client, categories):
+    response = client.get('/categories/')
     assert response.status_code == 200
     assert b'LIVRE' in response.data
-    assert b'Categoria teste 1' in response.data
+    assert b'category teste 1' in response.data
 
-def test_categorias_GET_by_id(client, categorias):
-    response = client.get('/categorias/2')
+def test_categories_GET_by_id(client, categories):
+    response = client.get('/categories/2')
     assert response.status_code == 200
-    assert b'Categoria teste 1' in response.data
+    assert b'category teste 1' in response.data
 
-def test_categorias_GET_by_id_with_invalid_id(client, categorias):
-    response = client.get('/categorias/15')
+def test_categories_GET_by_id_with_invalid_id(client, categories):
+    response = client.get('/categories/15')
     assert response.status_code == 404
-    assert b'categoria not found' in response.data
+    assert b'category not found' in response.data
 
-def test_categorias_POST_with_valid_json(client, categorias):
+def test_categories_POST_with_valid_json(client, categories):
     data = {
-        'titulo': 'Terror',
-        'cor': 'black'
+        'title': 'Terror',
+        'color': 'black'
     }
-    response = client.post('/categorias/', data=json.dumps(data), content_type='application/json')
+    response = client.post('/categories/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 201
     assert b'Terror' in response.data
     assert b'black' in response.data
 
-def test_categorias_POST_with_invalid_json_missing_field(client, categorias):
+def test_categories_POST_with_invalid_json_missing_field(client, categories):
     data = {
-        'titulo': 'Terror',
+        'title': 'Terror',
     }
-    response = client.post('/categorias/', data=json.dumps(data), content_type='application/json')
+    response = client.post('/categories/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'Missing data for required field.' in response.data
 
-def test_categorias_POST_with_invalid_json_more_fields(client, categorias):
+def test_categories_POST_with_invalid_json_more_fields(client, categories):
     data = {
-        'titulo': 'Video teste 3',
-        'cor': 'black',
+        'title': 'Video teste 3',
+        'color': 'black',
         'ola': 123
     }
-    response = client.post('/categorias/', data=json.dumps(data), content_type='application/json')
+    response = client.post('/categories/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'Unknown field.' in response.data
 
-def test_categorias_POST_with_invalid_json_blank_fields(client, categorias):
+def test_categories_POST_with_invalid_json_blank_fields(client, categories):
     data = {
-        'titulo': '',
-        'cor': ''
+        'title': '',
+        'color': ''
     }
-    response = client.post('/categorias/', data=json.dumps(data), content_type='application/json')
+    response = client.post('/categories/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'Must not blank' in response.data
 
-def test_categorias_PUT_with_valid_json(client, categorias):
+def test_categories_PUT_with_valid_json(client, categories):
     data = {
-        'titulo': 'Titulo atualizado',
-        'cor': 'Cor atualizada'
+        'title': 'title atualizado',
+        'color': 'color atualizada'
     }
-    response = client.put('/categorias/1', data=json.dumps(data), content_type='application/json')
+    response = client.put('/categories/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 200
-    assert b'Titulo atualizado' in response.data
-    assert b'Cor atualizada' in response.data
+    assert b'title atualizado' in response.data
+    assert b'color atualizada' in response.data
 
-def test_categorias_PUT_with_invalid_json_invalid_id(client, categorias):
+def test_categories_PUT_with_invalid_json_invalid_id(client, categories):
     data = {
-        'titulo': 'Terror',
-        'cor': 'black'
+        'title': 'Terror',
+        'color': 'black'
     }
-    response = client.put('/categorias/15', data=json.dumps(data), content_type='application/json')
+    response = client.put('/categories/15', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 404
-    assert b'categoria not found' in response.data
+    assert b'category not found' in response.data
 
-def test_categorias_PUT_with_invalid_json_missing_fields(client, categorias):
+def test_categories_PUT_with_invalid_json_missing_fields(client, categories):
     data = {
-        'titulo': 'Terror',
+        'title': 'Terror',
     }
-    response = client.put('/categorias/1', data=json.dumps(data), content_type='application/json')
+    response = client.put('/categories/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'Missing data for required field.' in response.data
     
-def test_categorias_PUT_with_invalid_json_more_fields(client, categorias):
+def test_categories_PUT_with_invalid_json_more_fields(client, categories):
     data = {
-        'titulo': 'Terror',
-        'cor': 'black',
+        'title': 'Terror',
+        'color': 'black',
         'ola': 123
     }
-    response = client.put('/categorias/1', data=json.dumps(data), content_type='application/json')
+    response = client.put('/categories/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'Unknown field' in response.data
     
-def test_categorias_PUT_with_invalid_json_blank_fields(client, categorias):
+def test_categories_PUT_with_invalid_json_blank_fields(client, categories):
     data = {
-        'titulo': '',
-        'cor': 'black'
+        'title': '',
+        'color': 'black'
     }
-    response = client.put('/categorias/1', data=json.dumps(data), content_type='application/json')
+    response = client.put('/categories/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'Must not blank.' in response.data
 
-def test_categorias_PATCH_with_valid_json(client, categorias):
+def test_categories_PATCH_with_valid_json(client, categories):
     data = {
-        'cor': 'green'
+        'color': 'green'
     }
-    response = client.patch('/categorias/1', data=json.dumps(data), content_type='application/json')
+    response = client.patch('/categories/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 200
     assert b'"id": 1' in response.data
     assert b'green' in response.data
 
-def test_categorias_PATCH_with_invalid_json_blank_fields(client, categorias):
+def test_categories_PATCH_with_invalid_json_blank_fields(client, categories):
     data = {
-        'cor': '',
+        'color': '',
     }
-    response = client.patch('/categorias/1', data=json.dumps(data), content_type='application/json')
+    response = client.patch('/categories/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
     assert b'Must not blank' in response.data
 
-def test_categorias_DELETE(client, categorias):
-    response = client.delete('/categorias/1')
+def test_categories_DELETE(client, categories):
+    response = client.delete('/categories/1')
     assert response.status_code == 200
     assert b'successfully deleted' in response.data
 
-def test_categorias_DELETE_wrong_id(client, categorias):
-    response = client.delete('/categorias/4')
+def test_categories_DELETE_wrong_id(client, categories):
+    response = client.delete('/categories/4')
     assert response.status_code == 404
-    assert b'fail to delete, categoria not found' in response.data
+    assert b'fail to delete, category not found' in response.data
 
-def test_categorias_GET_all_videos_by_category_id(client, categorias, videos):
-    response = client.get('/categorias/2/videos')
+def test_categories_GET_all_videos_by_category_id(client, categories, videos):
+    response = client.get('/categories/2/videos')
     assert response.status_code == 200
     assert b'Video teste 2' in response.data
     assert b'Meu segundo video' in response.data

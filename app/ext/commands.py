@@ -1,5 +1,5 @@
 from app.ext.database import db
-from app.models import Video, Categoria
+from app.models import Video, Category
 
 from random import randint
 
@@ -7,11 +7,11 @@ from random import randint
 def create_db():
     '''Create database'''
     db.create_all()
-    categoria = Categoria(
-        titulo='LIVRE',
-        cor='white'
+    category = Category(
+        title='LIVRE',
+        color='white'
     )
-    db.session.add(categoria)
+    db.session.add(category)
     db.session.commit()
 
 def drop_db():
@@ -20,21 +20,21 @@ def drop_db():
 
 def populate_db():
     '''Populate database'''
-    categorias = [
-        Categoria(
-            titulo=f'Categoria test {i}',
-            cor='black'
+    categories = [
+        Category(
+            title=f'category test {i}',
+            color='black'
         ) for i in range(5)
     ]
     videos = [
         Video(
-            titulo=f'Video teste {i}',
-            descricao='Meu primeiro video',
+            title=f'Video teste {i}',
+            description='Meu primeiro video',
             url='https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            categoria_id=randint(1, 5)
+            category_id=randint(1, 5)
         ) for i in range(10)
     ]
-    db.session.bulk_save_objects(categorias)
+    db.session.bulk_save_objects(categories)
     db.session.bulk_save_objects(videos)
     db.session.commit()
 

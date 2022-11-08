@@ -42,8 +42,8 @@ def test_videos_pagination_page_99_not_exist(client, bulk_videos):
     
 def test_videos_POST_with_valid_json(client, videos):
     data = {
-        'titulo': 'Video teste 3',
-        'descricao': 'Meu terceiro video',
+        'title': 'Video teste 3',
+        'description': 'Meu terceiro video',
         'url': 'https://www.google.com/'
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
@@ -51,24 +51,24 @@ def test_videos_POST_with_valid_json(client, videos):
     assert b'Video teste 3' in response.data
     assert b'Meu terceiro video' in response.data
     assert b'https://www.google.com/' in response.data
-    assert b'"categoria_id": 1' in response.data
+    assert b'"category_id": 1' in response.data
 
 def test_videos_POST_with_valid_json_and_category_id(client, videos):
     data = {
-        'titulo': 'Video teste 3',
-        'descricao': 'Meu terceiro video',
+        'title': 'Video teste 3',
+        'description': 'Meu terceiro video',
         'url': 'https://www.google.com/',
-        'categoria_id': 2
+        'category_id': 2
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 201
     assert b'Video teste 3' in response.data
     assert b'Meu terceiro video' in response.data
-    assert b'"categoria_id": 2' in response.data
+    assert b'"category_id": 2' in response.data
 
 def test_videos_POST_with_invalid_json_missing_field(client, videos):
     data = {
-        'titulo': 'Video teste 3',
+        'title': 'Video teste 3',
         'url': 'https://www.google.com/'
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
@@ -77,8 +77,8 @@ def test_videos_POST_with_invalid_json_missing_field(client, videos):
 
 def test_videos_POST_with_invalid_json_more_fields(client, videos):
     data = {
-        'titulo': 'Video teste 3',
-        'descricao': 'Meu terceiro video',
+        'title': 'Video teste 3',
+        'description': 'Meu terceiro video',
         'url': 'https://www.google.com/',
         'ola': 123
     }
@@ -88,8 +88,8 @@ def test_videos_POST_with_invalid_json_more_fields(client, videos):
 
 def test_videos_POST_with_invalid_json_blank_fields(client, videos):
     data = {
-        'titulo': '',
-        'descricao': 'Meu terceiro video',
+        'title': '',
+        'description': 'Meu terceiro video',
         'url': 'https://www.google.com/'
     }
     response = client.post('/videos/', data=json.dumps(data), content_type='application/json')
@@ -98,8 +98,8 @@ def test_videos_POST_with_invalid_json_blank_fields(client, videos):
 
 def test_videos_PUT_with_valid_json(client, videos):
     data = {
-        'titulo': 'Video teste 1 atualizado',
-        'descricao': 'Meu terceiro video atualizado',
+        'title': 'Video teste 1 atualizado',
+        'description': 'Meu terceiro video atualizado',
         'url': 'https://www.google.com/'
     }
     response = client.put('/videos/1', data=json.dumps(data), content_type='application/json')
@@ -110,8 +110,8 @@ def test_videos_PUT_with_valid_json(client, videos):
 
 def test_videos_PUT_with_invalid_json_with_invalid_id(client, videos):
     data = {
-        'titulo': 'Video teste 1 atualizado',
-        'descricao': 'Meu terceiro video atualizado',
+        'title': 'Video teste 1 atualizado',
+        'description': 'Meu terceiro video atualizado',
         'url': 'https://www.google.com/'
     }
     response = client.put('/videos/15', data=json.dumps(data), content_type='application/json')
@@ -120,7 +120,7 @@ def test_videos_PUT_with_invalid_json_with_invalid_id(client, videos):
 
 def test_videos_PUT_with_invalid_json_missing_fields(client, videos):
     data = {
-        'descricao': 'Meu terceiro video atualizado',
+        'description': 'Meu terceiro video atualizado',
         'url': 'https://www.google.com/'
     }
     response = client.put('/videos/1', data=json.dumps(data), content_type='application/json')
@@ -129,7 +129,7 @@ def test_videos_PUT_with_invalid_json_missing_fields(client, videos):
     
 def test_videos_PUT_with_invalid_json_more_fields(client, videos):
     data = {
-        'descricao': 'Meu terceiro video atualizado',
+        'description': 'Meu terceiro video atualizado',
         'url': 'https://www.google.com/',
         'ola': 123
     }
@@ -139,7 +139,7 @@ def test_videos_PUT_with_invalid_json_more_fields(client, videos):
     
 def test_videos_PUT_with_invalid_json_blank_fields(client, videos):
     data = {
-        'descricao': '',
+        'description': '',
         'url': 'https://www.google.com/'
     }
     response = client.put('/videos/1', data=json.dumps(data), content_type='application/json')
@@ -148,7 +148,7 @@ def test_videos_PUT_with_invalid_json_blank_fields(client, videos):
     
 def test_videos_PATCH_with_valid_json(client, videos):
     data = {
-        'titulo': 'Video teste 1 atualizado'
+        'title': 'Video teste 1 atualizado'
     }
     response = client.patch('/videos/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 200
@@ -157,7 +157,7 @@ def test_videos_PATCH_with_valid_json(client, videos):
 
 def test_videos_PATCH_with_invalid_json_blank_fields(client, videos):
     data = {
-        'titulo': ''
+        'title': ''
     }
     response = client.patch('/videos/1', data=json.dumps(data), content_type='application/json')
     assert response.status_code == 400
@@ -165,7 +165,7 @@ def test_videos_PATCH_with_invalid_json_blank_fields(client, videos):
 
 def test_videos_PATCH_with_invalid_json_blank_fields(client, videos):
     data = {
-        'descricao': '',
+        'description': '',
         'url': 'https://www.google.com/'
     }
     response = client.patch('/videos/1', data=json.dumps(data), content_type='application/json')

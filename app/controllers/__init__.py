@@ -1,7 +1,7 @@
 from app.controllers.videos_controller import videos
-from app.controllers.categorias_controller import categorias
+from app.controllers.categories_controller import categories
 
 
 def init_app(app):
     app.register_blueprint(videos)
-    app.register_blueprint(categorias)
+    app.register_blueprint(categories)

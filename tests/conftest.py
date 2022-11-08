@@ -3,7 +3,7 @@ from app.ext.database import db
 from pytest import fixture
 from random import randint
 
-from app.models import Video, Categoria
+from app.models import Video, Category
 
 
 @fixture(scope='module')
@@ -19,29 +19,29 @@ def client():
         db.session.remove()
 
 @fixture
-def categorias(client):
-    categorias = [
-        Categoria(
-            titulo='LIVRE',
-            cor='white'
+def categories(client):
+    categories = [
+        Category(
+            title='LIVRE',
+            color='white'
         ),
-        Categoria(
-            titulo='Categoria teste 1',
-            cor='Cor teste 1'
+        Category(
+            title='category teste 1',
+            color='color teste 1'
         ),
-        Categoria(
-            titulo='Categoria teste 2',
-            cor='Cor teste 2'
+        Category(
+            title='category teste 2',
+            color='color teste 2'
         )
     ]
-    db.session.bulk_save_objects(categorias)
+    db.session.bulk_save_objects(categories)
     db.session.commit()
 
     yield videos
 
     try:
-        for categoria in Categoria.query.all():
-            db.session.delete(categoria)
+        for category in Category.query.all():
+            db.session.delete(category)
         db.session.commit()
     except:
         db.session.rollback()
@@ -50,13 +50,13 @@ def categorias(client):
 
 
 @fixture
-def bulk_videos(client, categorias):
+def bulk_videos(client, categories):
     videos = [
         Video(
-            titulo=f'Video teste {i}',
-            descricao='Meu primeiro video',
+            title=f'Video teste {i}',
+            description='Meu primeiro video',
             url='https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-            categoria_id=randint(1, 3)
+            category_id=randint(1, 3)
         ) for i in range(20)
     ]
     db.session.bulk_save_objects(videos)
@@ -74,24 +74,24 @@ def bulk_videos(client, categorias):
         db.session.close()
 
 @fixture
-def videos(client, categorias):
+def videos(client, categories):
     videos = [
         Video(
-            titulo='Video teste 1',
-            descricao='Meu primeiro video',
+            title='Video teste 1',
+            description='Meu primeiro video',
             url='https://www.google.com/'
         ),
         Video(
-            titulo='Video teste 2',
-            descricao='Meu segundo video',
+            title='Video teste 2',
+            description='Meu segundo video',
             url='https://www.google.com/',
-            categoria_id=2
+            category_id=2
         ),
         Video(
-            titulo='Video teste 3',
-            descricao='Meu terceiro video',
+            title='Video teste 3',
+            description='Meu terceiro video',
             url='https://www.google.com/',
-            categoria_id=2
+            category_id=2
         ),
     ]
     db.session.bulk_save_objects(videos)
