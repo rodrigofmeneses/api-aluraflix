@@ -10,7 +10,7 @@ from app.models import Categoria
 categorias = Blueprint('categorias', __name__, url_prefix='/categorias')
 
 @categorias.get('/')
-def get_all_categories():
+def get_categories():
     '''Get all categories.
         Return:
             Response JSON with all categorias and status code.
@@ -45,8 +45,8 @@ def get_all_videos_by_category(id: int):
     return {'videos': video_schema.dump(categoria.videos, many=True)}, 200
 
 @categorias.post('/')
-def add_categoria():
-    '''Add categoria with POST method.
+def create_categoria():
+    '''Create categoria with POST method.
         Return:
             Response JSON with added categoria or error message and status code.
     '''

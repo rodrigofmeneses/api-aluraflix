@@ -1,6 +1,7 @@
 from app import create_app
 from app.ext.database import db
 from pytest import fixture
+from random import randint
 
 from app.models import Video, Categoria
 
@@ -47,6 +48,30 @@ def categorias(client):
     finally:
         db.session.close()
 
+
+@fixture
+def bulk_videos(client, categorias):
+    videos = [
+        Video(
+            titulo=f'Video teste {i}',
+            descricao='Meu primeiro video',
+            url='https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            categoria_id=randint(1, 3)
+        ) for i in range(20)
+    ]
+    db.session.bulk_save_objects(videos)
+    db.session.commit()
+    
+    yield videos
+
+    try:
+        for video in Video.query.all():
+            db.session.delete(video)
+        db.session.commit()
+    except:
+        db.session.rollback()
+    finally:
+        db.session.close()
 
 @fixture
 def videos(client, categorias):

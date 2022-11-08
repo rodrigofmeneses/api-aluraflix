@@ -1,6 +1,8 @@
 from app.ext.database import db
 from app.models import Video, Categoria
 
+from random import randint
+
 
 def create_db():
     '''Create database'''
@@ -20,25 +22,17 @@ def populate_db():
     '''Populate database'''
     categorias = [
         Categoria(
-            titulo='Categoria test 1',
+            titulo=f'Categoria test {i}',
             cor='black'
-        ),
-        Categoria(
-            titulo='Categoria test 2',
-            cor='brown'
-        ),
+        ) for i in range(5)
     ]
     videos = [
         Video(
-            titulo='Video teste 1',
+            titulo=f'Video teste {i}',
             descricao='Meu primeiro video',
-            url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-        ),
-        Video(
-            titulo='Video teste 2',
-            descricao='Meu segundo video',
-            url='https://www.youtube.com/watch?v=xFrGuyw1V8s'
-        ),
+            url='https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+            categoria_id=randint(1, 5)
+        ) for i in range(10)
     ]
     db.session.bulk_save_objects(categorias)
     db.session.bulk_save_objects(videos)

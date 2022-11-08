@@ -2,7 +2,6 @@ import json
 from urllib import response
 from pytest import mark
 
-
 def test_videos_GET(client, videos):
     response = client.get('/videos/')
     assert response.status_code == 200
@@ -28,11 +27,19 @@ def test_videos_GET_filter_with_no_data_search_teste_4(client, videos):
     assert response.status_code == 200
     assert b'[]' in response.data
 
-def test_videos_GET_filter_with_wrong_querystring_asdf(client, videos):
-    response = client.get('/videos/?asdf=teste 1')
-    assert response.status_code == 400
-    assert b'to filter a video use ?search=video_title' in response.data
+def test_videos_pagination_page_1(client, bulk_videos):
+    response = client.get('/videos/?page=1')
+    assert response.status_code == 200
+    assert b'Video teste 0' in response.data
+    assert b'Video teste 4' in response.data
+    assert b'Video teste 5' not in response.data
+    assert b'Video teste 6' not in response.data
 
+def test_videos_pagination_page_99_not_exist(client, bulk_videos):
+    response = client.get('/videos/?page=99')
+    assert response.status_code == 400
+    assert b'Wrong number of pages' in response.data
+    
 def test_videos_POST_with_valid_json(client, videos):
     data = {
         'titulo': 'Video teste 3',

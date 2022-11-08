@@ -1,31 +1,42 @@
 from flask import Blueprint, request
 from marshmallow import ValidationError
-from werkzeug.exceptions import BadRequestKeyError
+from werkzeug.exceptions import NotFound
 
 from app.models import Video
 from app.ext.database import db
 from app.ext.schemas.videos_schema import video_schema
 
+ROWS_PER_PAGE = 5
+
 
 videos = Blueprint('videos', __name__, url_prefix='/videos')
 
 @videos.get('/')
-def get_all_videos():
+def get_videos():
     '''Get all videos.
         Return:
             Response JSON with all videos and status code.
     '''
-    if not request.args:
-        all_videos = Video.query.all()
-        return {'videos': video_schema.dump(all_videos, many=True)}, 200
-    
+    page = request.args.get('page', default=1, type=int)
+    search = request.args.get('search')
+
+    query = Video.query
+    if search:
+        query = Video.query.filter(Video.titulo.like(f'%{search}%'))
     try:
-        target = request.args['search']
-    except BadRequestKeyError:
-        return {'message': 'to filter a video use ?search=video_title'}, 400
+        videos = query.paginate(page=page, per_page=ROWS_PER_PAGE)
+    except NotFound:
+        return {'message': 'Wrong number of pages'}, 400
+
+    response = {
+        'count': videos.total,
+        'next': None if not videos.has_next else f'{request.base_url}?page={videos.next_num}',
+        'previous': None if not videos.has_prev else f'{request.base_url}?page={videos.prev_num}',
+        'results': video_schema.dump(videos.items, many=True)
+    }
+
+    return response, 200
     
-    filter_videos = Video.query.filter(Video.titulo.like(f'%{target}%')).all()
-    return {'videos': video_schema.dump(filter_videos, many=True)}, 200 
     
 
 @videos.get('/<int:id>')
@@ -42,8 +53,8 @@ def get_video_by_id(id):
     return video_schema.dump(video), 200
 
 @videos.post('/')
-def add_video():
-    '''Add video with POST method.
+def create_video():
+    '''Create video with POST method.
         Return:
             Response JSON with added video or error message and status code.
     '''
