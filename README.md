@@ -4,6 +4,8 @@ API REST desenvolvida durante o Challenge Back End #5 da Alura.
 
 ## Considerações
 
+:warning: Problemas de migração do banco de dados.
+
 Neste desafio decidi usar Python em conjunto ao microframework web Flask. 
 Utilizei algumas das principais extensões do flask para lidar com banco de dados, serialização e configurações. Além de cobrir todas as rotas com testes unitários.
 
@@ -19,23 +21,24 @@ Essa API implementa as seguintes especificações:
 | Method | Route | Body Param. | Query Param.|
 |--------|-------|-----|---------------|
 | GET | /videos | - | - |
-| GET | /videos/?search={titulo} | - | titulo do vídeo |
+| GET | /videos/?search={title} | - | title do vídeo |
 | GET | /videos/{id} | - | id do vídeo |
-| POST | /videos | {'titulo', 'descricao', 'url', 'categoria_id'} | - |
-| PUT | /videos/{id} | {'titulo', 'descricao', 'url', 'categoria_id'} | id do vídeo |
-| PATCH | /videos/{id} | {'titulo', 'descricao', 'url', 'categoria_id'} | id do vídeo |
+| POST | /videos | {'title', 'description', 'url', 'category_id'} | - |
+| PUT | /videos/{id} | {'title', 'description', 'url', 'category_id'} | id do vídeo |
+| PATCH | /videos/{id} | {'title', 'description', 'url', 'category_id'} | id do vídeo |
 | DELETE | /videos/{id} | - | id do vídeo |
-| GET | /categorias | - | - |
-| GET | /categorias/{id} | - | id da categoria |
-| POST | /categorias | {'titulo', 'cor'} | - |
-| PUT | /categorias/{id} | {'titulo', 'cor'} | id da categoria |
-| PATCH | /categorias/{id} | {'titulo', 'cor'} | id da categoria |
-| DELETE | /categorias/{id} | - | id da categoria |
+| GET | /categories | - | - |
+| GET | /categories/{id} | - | id da categoria |
+| POST | /categories | {'title', 'color'} | - |
+| PUT | /categories/{id} | {'title', 'color'} | id da categoria |
+| PATCH | /categories/{id} | {'title', 'color'} | id da categoria |
+| DELETE | /categories/{id} | - | id da categoria |
 
 
 ## Pré-requisitos
  - Python 3.10.8
  - Flask 2.2.2
+ - Postgresql 
 
 ## Principais Bibliotecas
 
@@ -113,7 +116,7 @@ platform ~ -- Python 3.10.8, pytest-7.2.0, pluggy-1.0.0
 rootdir: ~\api-aluraflix, configfile: pytest.ini
 collected 37 items                                                                                                   
 
-tests\test_categorias.py ................. [ 45%] 
+tests\test_categories.py ................. [ 45%] 
 tests\test_videos.py ....................  [100%]
 ```
 
@@ -127,7 +130,7 @@ tests\test_videos.py ....................  [100%]
 
 ### Semana 2
 
-- [x] Modelo e CRUD para categorias.
-- [x] Testes unitários para categorias
+- [x] Modelo e CRUD para categories.
+- [x] Testes unitários para categories
 - [x] Filtro para videos por query string.
 - [ ] Testes de integração.
