@@ -23,6 +23,7 @@ def get_videos():
     query = Video.query
     if search:
         query = Video.query.filter(Video.titulo.like(f'%{search}%'))
+    
     try:
         videos = query.paginate(page=page, per_page=ROWS_PER_PAGE)
     except NotFound:
@@ -48,8 +49,10 @@ def get_video_by_id(id):
             Response JSON with video or error message and status code.
     '''
     video = Video.query.get(id)
+
     if not video:
         return {'message': 'video not found'}, 404
+
     return video_schema.dump(video), 200
 
 @videos.post('/')
@@ -59,12 +62,15 @@ def create_video():
             Response JSON with added video or error message and status code.
     '''
     json_data = request.get_json()
+
     try:
         video = video_schema.load(json_data)
     except ValidationError as err:
         return err.messages, 400
+
     db.session.add(video)
     db.session.commit()
+
     return video_schema.dump(video), 201
 
 @videos.route('/<int:id>', methods=['PUT', 'PATCH'])
@@ -91,13 +97,23 @@ def update_video_by_id(id):
 
     Video.query.filter_by(id=id).update(json_data)
     db.session.commit()
+
     return video_schema.dump(video), 200
 
 @videos.delete('/<int:id>')
 def delete_video_by_id(id):
+    '''Delete video by id with DELETE methods.
+        Args:
+            id (int): Video id.
+        Return:
+            Response message with successfull or fail delete.
+    '''
     video = Video.query.get(id)
+
     if not video:
         return {'message': 'fail to delete, video not found'}, 404
+    
     db.session.delete(video)
     db.session.commit()
+    
     return {'message': 'successfully deleted'}, 200
