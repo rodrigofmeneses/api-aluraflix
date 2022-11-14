@@ -7,8 +7,8 @@ EXTENSIONS = [
 ]
 
 [development]
-# SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
-SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost:5432/aluraflix'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
+# SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost:5432/aluraflix'
 
 [testing]
 TESTING = true
