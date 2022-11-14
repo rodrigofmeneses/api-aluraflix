@@ -40,7 +40,7 @@ def get_videos():
     
     
 
-@videos.get('/<int:id>')
+@videos.get('/<int:id>/')
 def get_video_by_id(id):
     '''Get video by id.
         Args:
@@ -73,7 +73,7 @@ def create_video():
 
     return video_schema.dump(video), 201
 
-@videos.route('/<int:id>', methods=['PUT', 'PATCH'])
+@videos.route('/<int:id>/', methods=['PUT', 'PATCH'])
 def update_video_by_id(id):
     '''Update video by id with PUT and PATCH methods.
         Args:
@@ -100,7 +100,7 @@ def update_video_by_id(id):
 
     return video_schema.dump(video), 200
 
-@videos.delete('/<int:id>')
+@videos.delete('/<int:id>/')
 def delete_video_by_id(id):
     '''Delete video by id with DELETE methods.
         Args:

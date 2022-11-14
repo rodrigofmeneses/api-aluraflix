@@ -18,7 +18,7 @@ def get_categories():
     categories = Category.query.all()
     return {'categories': category_schema.dump(categories, many=True)}, 200
 
-@categories.get('/<int:id>')
+@categories.get('/<int:id>/')
 def get_category_by_id(id: int):
     '''Get category by id.
         Args:
@@ -31,7 +31,7 @@ def get_category_by_id(id: int):
         return {'message': 'category not found'}, 404
     return category_schema.dump(category), 200
 
-@categories.get('/<int:id>/videos')
+@categories.get('/<int:id>/videos/')
 def get_all_videos_by_category(id: int):
     '''Get all videos by category.
         Args:
@@ -59,7 +59,7 @@ def create_category():
     db.session.commit()
     return category_schema.dump(category), 201
 
-@categories.route('/<int:id>', methods=['PUT', 'PATCH'])
+@categories.route('/<int:id>/', methods=['PUT', 'PATCH'])
 def update_category_by_id(id: int):
     '''Update category by id with POST
         Args:
@@ -85,7 +85,7 @@ def update_category_by_id(id: int):
     db.session.commit()
     return category_schema.dump(category), 200
 
-@categories.delete('/<int:id>')
+@categories.delete('/<int:id>/')
 def delete_category_by_id(id: int):
     category = Category.query.get(id)
     if not category:
