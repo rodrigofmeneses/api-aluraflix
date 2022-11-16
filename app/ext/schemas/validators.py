@@ -7,5 +7,5 @@ def not_blank(data):
         raise ValidationError("Must not blank.")
 
 def unique_username(username):
-    if not User.query.filter(User.username == username).first():
+    if User.query.filter(User.username == username).first():
         raise ValidationError("Username must be unique")
