@@ -3,6 +3,8 @@ from marshmallow import ValidationError
 from werkzeug.exceptions import BadRequest
 from app.ext.database import db
 from app.ext.schemas.users_schema import user_schema
+from app.ext.schemas.auth_schema import auth_schema
+from app.models import User
 
 
 auth = Blueprint("auth", __name__, url_prefix="/auth")
@@ -45,9 +47,19 @@ def authenticate():
             "message": "Bad Request, JSON with username and password fields expected"
         }, 400
 
-    if not json_data or not json_data['username'] or not json_data['password']:
+    try:
+        auth = auth_schema.load(json_data)
+    except ValidationError as err:
+        return err.messages, 400
+    
+    username = auth.get('username')
+    password = auth.get('password')
+    user = User.query.filter_by(username=username).one()
+    if not all([user, user.verify_password(password)]):
         return {"message": "Please send valids username and password"}, 401
+    
     return {
-        "message": "user authenticated",
-        "token": "123"
+        "message": f"user {username} authenticated, please, \
+            send this token for all requisitions except /videos/free",
+        "token": f"{user.encode_auth_token()}"
         }, 200
