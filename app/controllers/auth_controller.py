@@ -5,10 +5,12 @@ from app.ext.database import db
 from app.ext.schemas.users_schema import user_schema
 from app.ext.schemas.auth_schema import auth_schema
 from app.models import User
+from app.controllers.helpers import token_required
+
 
 
 auth = Blueprint("auth", __name__, url_prefix="/auth")
-
+auth.before_app_request(token_required)
 
 @auth.post("/register/")
 def register():
