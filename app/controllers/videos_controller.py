@@ -124,3 +124,20 @@ def delete_video_by_id(id):
     db.session.commit()
 
     return {"message": "successfully deleted"}, 200
+
+@videos.get('/free/')
+def free():
+    '''Route free for all users. Don't require authentication
+
+    Return:
+        Response with last 5 registered videos.
+    '''
+    videos = Video.query.order_by(
+        Video.id.desc()
+    ).limit(5).all()
+
+    response = {
+        "videos": video_schema.dump(videos, many=True),
+    }
+
+    return response, 200

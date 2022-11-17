@@ -28,7 +28,7 @@ def token_required():
     free_routes = [
         url_for('auth.authenticate'), 
         url_for('auth.register'),
-        # url_for('videos.free'),
+        url_for('videos.free'),
     ]
 
     if request.endpoint and not request.url_rule.rule in free_routes:
