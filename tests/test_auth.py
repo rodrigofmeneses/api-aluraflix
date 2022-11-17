@@ -32,3 +32,7 @@ def test_decode_auth_token(client, users):
     auth_token = user.encode_auth_token()
     assert len(auth_token) > 30
     assert User.decode_auth_token(auth_token) == user.id
+
+def test_acess_protected_route_with_unauthorized_user(client, videos, users):
+    response = client.get('videos/')
+    assert response.status_code == 401

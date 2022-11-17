@@ -1,7 +1,9 @@
+import json
+from random import randint
+
 from app import create_app
 from app.ext.database import db
 from pytest import fixture
-from random import randint
 
 from app.models import User, Video, Category
 
@@ -14,6 +16,10 @@ def client():
 
     with app.test_client() as client:
         db.create_all()
+        response = client.post("/auth/register/", json={
+            'username': 'super_user',
+            'password': 'super_secret_password'
+        })
         yield client
         db.drop_all()
         db.session.remove()
@@ -122,3 +128,13 @@ def users(client):
         db.session.rollback()
     finally:
         db.session.close()
+
+@fixture
+def authorization(client):
+    user = {
+        'username': 'super_user',
+        'password': 'super_secret_password'
+    }
+    response = client.post("auth/", json=user)
+    token = json.loads(response.data).get('token')
+    return {'Authorization': token}

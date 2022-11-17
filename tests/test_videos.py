@@ -2,8 +2,8 @@ from urllib import response
 from pytest import mark
 
 
-def test_videos_GET(client, videos):
-    response = client.get("/videos/")
+def test_videos_GET(client, videos, token):
+    response = client.get("/videos/", headers={'Authorization': token})
     assert response.status_code == 200
     assert b"Video teste 1" in response.data
 
