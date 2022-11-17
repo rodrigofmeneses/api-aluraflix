@@ -1,5 +1,10 @@
-from app.ext.database import db
+import datetime
+import os
+
+import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from app.ext.database import db
 
 
 class Video(db.Model):
@@ -34,7 +39,38 @@ class User(db.Model):
 
     @password.setter
     def password(self, password):
+        """Create a password hash to criptograph user password."""
         self.password_hash = generate_password_hash(password)
 
-    def verify_password(self, password):
+    def verify_password(self, password: str) -> str:
         return check_password_hash(self.password_hash, password)
+
+    def encode_auth_token(self):
+        """Generates the Auth Token
+        exp: expiration date of the token
+        iat: the time the token is generated
+        sub: the subject of the token (the user whom it identifies)
+        """
+        payload = {
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=60),
+            "iat": datetime.datetime.utcnow(),
+            "sub": self.id,
+        }
+        return jwt.encode(payload, os.getenv("SECRET_KEY"))
+
+    @staticmethod
+    def decode_auth_token(auth_token):
+        """
+        Decodes the auth token
+        :param auth_token:
+        :return: integer|string
+        """
+        try:
+            payload = jwt.decode(
+                auth_token, os.getenv("SECRET_KEY"), algorithms="HS256"
+            )
+            return payload["sub"]
+        except jwt.ExpiredSignatureError:
+            return "Signature expired. Please log in again."
+        except jwt.InvalidTokenError:
+            return "Invalid token. Please log in again."
