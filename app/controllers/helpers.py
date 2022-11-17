@@ -30,9 +30,10 @@ def token_required():
         url_for('auth.register'),
         # url_for('videos.free'),
     ]
-    if not request.url_rule.rule in free_routes:
+
+    if request.endpoint and not request.url_rule.rule in free_routes:
         auth_token = request.headers.get("Authorization") or "Invalid"
-        token_value = User.decode_auth_token(auth_token.split()[-1])
+        token_value = User.decode_auth_token(auth_token)
 
         if (
             isinstance(token_value, str)
