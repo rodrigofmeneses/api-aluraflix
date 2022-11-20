@@ -36,7 +36,7 @@ def register():
     return user_schema.dump(user), 201
 
 
-@auth.post("/")
+@auth.post("/login")
 def authenticate():
     """Authenticate user with POST method. Using authorization header.
     Return:

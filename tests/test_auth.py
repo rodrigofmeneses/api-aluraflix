@@ -17,7 +17,7 @@ def test_register_existent_username(client, users):
 
 def test_authenticate_user(client, users):
     data = {"username": "rodrigo", "password": "1234"}
-    response = client.post("auth/", json=data)
+    response = client.post("auth/login", json=data)
     assert response.status_code == 200
     assert b"user rodrigo authenticated" in response.data
     assert b"token" in response.data
