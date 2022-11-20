@@ -4,8 +4,6 @@ API REST desenvolvida durante o Challenge Back End #5 da Alura.
 
 ## Considerações
 
-:warning: Problemas de migração do banco de dados.
-
 Neste desafio decidi usar Python em conjunto ao microframework web Flask. 
 Utilizei algumas das principais extensões do flask para lidar com banco de dados, serialização e configurações. Além de cobrir todas as rotas com testes unitários.
 
@@ -15,13 +13,42 @@ Essa API implementa as seguintes especificações:
  - Rotas no padrão REST.
  - Validações feitas conforme as regras de negócio.
  - Banco de dados para a persistência de informações.
+ - Autenticação via JWT.
 
 ## Rotas implementadas
+
+Exceto as rotas de autenticação `/auth/register`, `/auth/login` e a rota `/videos/free` todas as rotas são protegidas. Para acessa-las é necessário em cada request enviar um token de autenticação no header:
+
+`{'Authorization': 'token'}` 
+
+Para obter esse token basta acessar a rota `/auth/login` enviando no body da requisição das credenciais de um usuário cadastrado no sistema: 
+
+```
+{
+    'username': 'rodrigo',
+    'password': '123456'
+}
+```
+
+Essa rota fornecerá uma mensagem se o login foi efetuado com sucesso ou não e um token válido por 60 segundos. Após esse tempo é necessário obter um novo token.
+
+Para cadastrar um funcionário, semelhante a etapa de login, deve-se enviar as credenciais de um novo usuário para a rota `/auth/register`, nesse instante já receberá um token válido.
+
+
+### Rotas Livres
+
+| Method | Route | Body Param. | Response.|
+|--------|-------|-----|---------------|
+| GET | /videos/free | - | - |
+| POST | /auth/register | {'username', 'password'} | {'message', 'token'} |
+| POST | /auth/login | {'username', 'password'} | {'message', 'token'} |
+
+### Rotas Protegidas
 
 | Method | Route | Body Param. | Query Param.|
 |--------|-------|-----|---------------|
 | GET | /videos | - | - |
-| GET | /videos/?search={title} | - | title do vídeo |
+| GET | /videos/?search={title} | - | título do vídeo |
 | GET | /videos/{id} | - | id do vídeo |
 | POST | /videos | {'title', 'description', 'url', 'category_id'} | - |
 | PUT | /videos/{id} | {'title', 'description', 'url', 'category_id'} | id do vídeo |
@@ -34,11 +61,10 @@ Essa API implementa as seguintes especificações:
 | PATCH | /categories/{id} | {'title', 'color'} | id da categoria |
 | DELETE | /categories/{id} | - | id da categoria |
 
-
 ## Pré-requisitos
  - Python 3.10.8
  - Flask 2.2.2
- - Postgresql 
+ - SQLite (Caso queira mudar o sgbd, basta trocar as credenciais no SQLAlchemy)
 
 ## Principais Bibliotecas
 
@@ -70,7 +96,15 @@ $ pip install -r requirements.txt
 
 ### Criação do banco de dados
 
-Para criar e popular o banco de dados:
+Primeiramente fazer as migrações com auxílio a biblioteca flask_migrate:
+
+```
+flask db init
+flask db migrate
+flask db upgrade
+```
+
+Em seguida basta criar e popular o banco de dados:
 
 ```
 $ flask create-db
@@ -114,10 +148,12 @@ A saída esperada:
 ```
 platform ~ -- Python 3.10.8, pytest-7.2.0, pluggy-1.0.0
 rootdir: ~\api-aluraflix, configfile: pytest.ini
-collected 37 items                                                                                                   
+collected 47 items                                                                                                                                                                                 
 
-tests\test_categories.py ................. [ 45%] 
-tests\test_videos.py ....................  [100%]
+tests/test_auth.py .......................[ 12%]
+tests/test_categories.py .................[ 48%]
+tests/test_users.py ......................[ 55%]
+tests/test_videos.py .....................[100%]
 ```
 
 
@@ -133,4 +169,10 @@ tests\test_videos.py ....................  [100%]
 - [x] Modelo e CRUD para categories.
 - [x] Testes unitários para categories
 - [x] Filtro para videos por query string.
-- [ ] Testes de integração.
+- [x] Testes de integração.
+
+### Semana 3 e 4
+
+- [x] Paginação
+- [x] Autenticação
+- [ ] Deploy
