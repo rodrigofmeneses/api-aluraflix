@@ -135,6 +135,6 @@ def authorization(client):
         'username': 'super_user',
         'password': 'super_secret_password'
     }
-    response = client.post("auth/", json=user)
+    response = client.post("auth/login", json=user)
     token = json.loads(response.data).get('token')
     return {'Authorization': token}
