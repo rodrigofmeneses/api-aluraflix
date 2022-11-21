@@ -61,7 +61,6 @@ def authenticate():
         return {"message": "Please send valids username and password"}, 401
     
     return {
-        "message": f"user {username} authenticated, please, \
-            send this token for all requisitions except /videos/free",
+        "message": f"user {username} authenticated, please, send this token for all requisitions except /videos/free",
         "token": f"{user.encode_auth_token()}"
         }, 200
