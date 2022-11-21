@@ -1,5 +1,6 @@
 from app.ext.database import db
 from app.models import Video, Category
+from faker import Faker
 
 from random import randint
 
@@ -7,7 +8,7 @@ from random import randint
 def create_db():
     """Create database"""
     db.create_all()
-    category = Category(title="LIVRE", color="white")
+    category = Category(title="FREE", color="ffffff")
     db.session.add(category)
     db.session.commit()
 
@@ -19,12 +20,13 @@ def drop_db():
 
 def populate_db():
     """Populate database"""
-    categories = [Category(title=f"category test {i}", color="black") for i in range(5)]
+    faker = Faker()
+    categories = [Category(title=f"Test Category {i}", color=faker.color()) for i in range(5)]
     videos = [
         Video(
-            title=f"Video teste {i}",
-            description="Meu primeiro video",
-            url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            title=f"Test Video {i}",
+            description=faker.text(),
+            url=faker.url(),
             category_id=randint(1, 5),
         )
         for i in range(10)
