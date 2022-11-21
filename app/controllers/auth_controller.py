@@ -33,7 +33,7 @@ def register():
     db.session.add(user)
     db.session.commit()
 
-    return user_schema.dump(user), 201
+    return {"user": user_schema.dump(user), "token": user.encode_auth_token()}, 201
 
 
 @auth.post("/login/")
