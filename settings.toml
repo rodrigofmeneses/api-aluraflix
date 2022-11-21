@@ -6,6 +6,8 @@ EXTENSIONS = [
     'app.controllers:init_app'
 ]
 
+[production]
+
 [development]
 SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
 # SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost:5432/aluraflix'
