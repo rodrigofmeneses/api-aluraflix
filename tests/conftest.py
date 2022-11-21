@@ -4,13 +4,15 @@ from random import randint
 from app import create_app
 from app.ext.database import db
 from pytest import fixture
+from dotenv import load_dotenv
 
 from app.models import User, Video, Category
 
+load_dotenv('.env.test')
 
 @fixture(scope="module")
 def client():
-    app = create_app(FORCE_ENV_FOR_DYNACONF="testing")
+    app = create_app()
     context = app.test_request_context()
     context.push()
 

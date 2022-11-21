@@ -1,11 +1,18 @@
 import os
 from flask import Flask
-from dynaconf import FlaskDynaconf
+
+from app.ext.database import init_app as init_db
+from app.ext.serializer import init_app as init_serializer
+from app.ext.commands import init_app as init_commands
+from app.controllers import init_app as init_controllers
 
 
-def create_app(**config):
+def create_app():
     app = Flask(__name__)
-    FlaskDynaconf(app, **config)
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
-    app.config.load_extensions("EXTENSIONS")
+    init_db(app)
+    init_serializer(app)
+    init_commands(app)
+    init_controllers(app)
     return app
