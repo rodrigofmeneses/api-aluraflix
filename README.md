@@ -102,13 +102,13 @@ Observe também que há o arquiv `.env.test`, por padrão o banco de dados de te
 Após baixar e entrar na raiz do projeto, crie um ambiente virtual e ative-o:
 
 ```
-$ python -m venv venv
-$ venv/scripts/activate # Windows
-$ source venv/bin/activate # Linux
+python -m venv venv
+venv/scripts/activate # Windows
+source venv/bin/activate # Linux
 ```
 Em seguida instale as dependências:
 ```
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Criação do banco de dados
@@ -124,14 +124,14 @@ flask db upgrade
 Em seguida basta criar e popular o banco de dados:
 
 ```
-$ flask create-db
-$ flask populate-db
+flask create-db
+flask populate-db
 ```
 
 Caso queira apagar o banco de dados:
 
 ```
-$ flask drop-db
+flask drop-db
 ```
 
 Esses comandos podem ser customizados em ```app\ext\commands.py```.
@@ -159,7 +159,7 @@ Press CTRL+C to quit
 Para rodar os testes:
 
 ```
-$ pytest
+pytest
 ```
 A saída esperada:
 ```
