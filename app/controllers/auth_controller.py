@@ -56,8 +56,8 @@ def authenticate():
     
     username = auth.get('username')
     password = auth.get('password')
-    user = User.query.filter_by(username=username).one()
-    if not all([user, user.verify_password(password)]):
+    user = User.query.filter_by(username=username).first()
+    if not user or not user.verify_password(password):
         return {"message": "Please send valids username and password"}, 401
     
     return {
