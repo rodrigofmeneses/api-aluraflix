@@ -2,10 +2,15 @@
 
 API REST desenvolvida durante o Challenge Back End #5 da Alura.
 
+A API está disponível em:
+
+https://api-aluraflix-rodrigofmeneses.herokuapp.com/videos/free/
+
+
 ## Considerações
 
 Neste desafio decidi usar Python em conjunto ao microframework web Flask. 
-Utilizei algumas das principais extensões do flask para lidar com banco de dados, serialização e configurações. Além de cobrir todas as rotas com testes unitários.
+Utilizei algumas das principais extensões do flask para lidar com banco de dados e serialização. Além de cobrir todas as rotas com testes de integração.
 
 ## Funcionalidades
 
@@ -74,11 +79,23 @@ Para cadastrar um funcionário, semelhante a etapa de login, deve-se enviar as c
 | Flask SQLAlchemy  | Modelos e buscar no Banco de Dados       |
 | Flask Migrate     | Migrações no Banco de Dados       |
 | Flask Marshmalow  | Serialização e Validação de JSON |
-| Dynaconf          | Auxiliar com as configurações     |
+| Python dotenv| Lidar com variáveis de ambiente |
 | Pytest            | Testes automatizados              |
 
 
 ## Como rodar a aplicação
+
+### Variáveis de Ambiente
+
+Para rodas este projeto, voce precisará adicionar as seguintes variáveis de ambiente. As que usei estão disponíveis como referência, mas fique a vontade para modificar o arquivo `.env`. Por padrão usei o SQLite para desenvolvimento.
+
+Observe também que há o arquiv `.env.test`, por padrão o banco de dados de teste é um SQLite na memória.
+
+<!-- To run this project, you will need to add the following environment variables to your .env file -->
+
+`SQLALCHEMY_DATABASE_URI` = Conexão com o banco de dados.
+
+`SECRET_KEY` = Necessário para autenticação via JWT.
 
 ### Configuração do ambiente e instalação de dependências
 
@@ -111,7 +128,7 @@ $ flask create-db
 $ flask populate-db
 ```
 
-Caso queira apagar todos os dados:
+Caso queira apagar o banco de dados:
 
 ```
 $ flask drop-db
@@ -175,4 +192,4 @@ tests/test_videos.py .....................[100%]
 
 - [x] Paginação
 - [x] Autenticação
-- [ ] Deploy
+- [x] Deploy
