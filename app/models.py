@@ -52,7 +52,7 @@ class User(db.Model):
         sub: the subject of the token (the user whom it identifies)
         """
         payload = {
-            "exp": datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=60),
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=300),
             "iat": datetime.datetime.utcnow(),
             "sub": self.id,
         }
