@@ -59,7 +59,7 @@ def test_videos_POST_with_valid_json(client, videos, authorization):
     assert b"Video teste 3" in response.data
     assert b"Meu terceiro video" in response.data
     assert b"https://www.google.com/" in response.data
-    assert b'"category_id": 1' in response.data
+    assert b'"category_id":1' in response.data
 
 
 def test_videos_POST_with_valid_json_and_category_id(client, videos, authorization):
@@ -73,7 +73,7 @@ def test_videos_POST_with_valid_json_and_category_id(client, videos, authorizati
     assert response.status_code == 201
     assert b"Video teste 3" in response.data
     assert b"Meu terceiro video" in response.data
-    assert b'"category_id": 2' in response.data
+    assert b'"category_id":2' in response.data
 
 
 def test_videos_POST_with_invalid_json_missing_field(client, videos, authorization):
@@ -162,7 +162,7 @@ def test_videos_PATCH_with_valid_json(client, videos, authorization):
     data = {"title": "Video teste 1 atualizado"}
     response = client.patch("/videos/1/", json=data, headers=authorization)
     assert response.status_code == 200
-    assert b'"id": 1' in response.data
+    assert b'"id":1' in response.data
     assert b"Video teste 1 atualizado" in response.data
 
 

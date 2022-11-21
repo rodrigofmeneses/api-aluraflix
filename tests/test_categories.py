@@ -93,7 +93,7 @@ def test_categories_PATCH_with_valid_json(client, categories, authorization):
     data = {"color": "green"}
     response = client.patch("/categories/1/", json=data, headers=authorization)
     assert response.status_code == 200
-    assert b'"id": 1' in response.data
+    assert b'"id":1' in response.data
     assert b"green" in response.data
 
 
